@@ -9,6 +9,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,15 +18,13 @@ import java.io.IOException;
 /**
  * @author choky
  */
+@Component
 public class KkAccessDeniedHandler implements AccessDeniedHandler {
-
     private ObjectMapper mapper = new ObjectMapper();
-
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
-
         if (KkUtils.isAjaxRequest(request)) {
             response.setContentType(KkConstant.CONTENT_TYPE_JSON_UTF8);
             response.getWriter().write(this.mapper.writeValueAsString(new ResponseEntity<Object>("AccessDenied", HttpStatus.UNAUTHORIZED)));
