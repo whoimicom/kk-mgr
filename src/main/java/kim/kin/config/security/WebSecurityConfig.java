@@ -7,11 +7,9 @@ import kim.kin.config.handler.KkLogoutHandler;
 import kim.kin.config.session.KkInvalidSessionStrategy;
 import kim.kin.config.session.KkSessionInformationExpiredStrategy;
 import kim.kin.service.impl.KkUserDetailService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -20,7 +18,6 @@ import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
@@ -34,22 +31,22 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    //    private final UserDetailsServiceImpl userDetailsServiceImpl;
-//    private final KkAuthenticationSucessHandler kkAuthenticationSucessHandle;
+
     private final KkAuthenticationFailureHandler kkAuthenticationFailureHandler;
     private final KkUserDetailService kkUserDetailService;
     private final KkInvalidSessionStrategy kkInvalidSessionStrategy;
     private final KkSessionInformationExpiredStrategy kkSessionInformationExpiredStrategy;
-//    @Qualifier("dataSource")
-    @Autowired
-    private DataSource dataSource;
+    private final KkAccessDeniedHandler kkAccessDeniedHandler;
+    private final DataSource dataSource;
 
-    public WebSecurityConfig(KkAuthenticationFailureHandler kkAuthenticationFailureHandler, KkUserDetailService kkUserDetailService, KkInvalidSessionStrategy kkInvalidSessionStrategy, KkSessionInformationExpiredStrategy kkSessionInformationExpiredStrategy) {
-//        this.userDetailsServiceImpl = userDetailsServiceImpl;
+    public WebSecurityConfig(KkAuthenticationFailureHandler kkAuthenticationFailureHandler, KkUserDetailService kkUserDetailService, KkInvalidSessionStrategy kkInvalidSessionStrategy, KkSessionInformationExpiredStrategy kkSessionInformationExpiredStrategy, KkAccessDeniedHandler kkAccessDeniedHandler, DataSource dataSource) {
+
         this.kkAuthenticationFailureHandler = kkAuthenticationFailureHandler;
         this.kkUserDetailService = kkUserDetailService;
         this.kkInvalidSessionStrategy = kkInvalidSessionStrategy;
         this.kkSessionInformationExpiredStrategy = kkSessionInformationExpiredStrategy;
+        this.kkAccessDeniedHandler = kkAccessDeniedHandler;
+        this.dataSource = dataSource;
     }
 
 //    @Autowired
@@ -71,7 +68,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         String[] anonResourcesUrl = {"/", "/css/**", "/js/**", "/fonts/**", "/img/**", "/assets/**", "*.svg", "*.png", "*.js", "*.css", "*.ico"};
-        httpSecurity.exceptionHandling().accessDeniedHandler(kkAccessDeniedHandler());
+        httpSecurity.exceptionHandling().accessDeniedHandler(kkAccessDeniedHandler);
         // formLogin
         httpSecurity.formLogin()
                 .loginPage("/login")
@@ -105,11 +102,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // disable csrf
         httpSecurity.csrf().disable();
 
-    }
-
-    @Bean
-    public AccessDeniedHandler kkAccessDeniedHandler() {
-        return new KkAccessDeniedHandler();
     }
 
     @Bean
