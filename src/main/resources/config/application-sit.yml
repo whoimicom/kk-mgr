@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://kin.kim:3306/kinkim?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
+    username: im@kin.kim[yT0o/tBDsLDMKDJkWsmSMLT1D1F6VdjJQ2piv1kJVmsT66+q3xZlaIrfe8PaU1OFhgdfywgTilVb2q2J/mWH2yPIezWRJR5WhUNp+thJJyH1UwT7GL+aGy8peUU5dv6ORWxyLC/xJK4kFuS3Exum5B2Yf1owj1oRHeVyzknK47FynIY75g6UCpMnInIxlJwZIGFmOwn1B7FKwqewhtC1+Xx4QELFFr5ACKD4k2q3cfjl8xkdXBkfsaiWwhikLJjWGX5Hfy0ry0NagAAFis9BA9LQobSemfyl6iiyBuPpHQ2MXQDaE7NzVF9O77tf/0GVJhKg8dT3VaDNYOy9S9AcaQ==]
+    password: im@kin.kim[Z+kb5ctzpOaIjjijiwNzelvDIsNhdU0jgoFlUKugDwWE4jqNdPZrWGBgomkWfJ46zxtfpEb+Sb4JZo9O560lKlCcXYAjOudVJj5UD9WS8uXkex+WruwZvavr3SNHpMuNA5rqGeytYrEHGplck+SKQWTxeRX30wg+b4nbZyo3y8Wpnb3wUB0TEEWm6uVa/voh2q3hqZiFpGAbrxne73dfQ0c3RP0YSNQ8vXlZmOr536sSMY2Etgy9K0zsoxRirrbYzGsguxITlMZpfrGZWJ/7c1ulzzeu6Fzapr+WSveWpoulGsQh0gRXoC0G6k3AywOySTu3YXVBPXduEsimAYeMUA==]
+  redis:
+    host: kin.kim
+    password: im@kin.kim[Z+kb5ctzpOaIjjijiwNzelvDIsNhdU0jgoFlUKugDwWE4jqNdPZrWGBgomkWfJ46zxtfpEb+Sb4JZo9O560lKlCcXYAjOudVJj5UD9WS8uXkex+WruwZvavr3SNHpMuNA5rqGeytYrEHGplck+SKQWTxeRX30wg+b4nbZyo3y8Wpnb3wUB0TEEWm6uVa/voh2q3hqZiFpGAbrxne73dfQ0c3RP0YSNQ8vXlZmOr536sSMY2Etgy9K0zsoxRirrbYzGsguxITlMZpfrGZWJ/7c1ulzzeu6Fzapr+WSveWpoulGsQh0gRXoC0G6k3AywOySTu3YXVBPXduEsimAYeMUA==]
+    port: 6379
+    database: 0
+jasypt:
+  encryptor:
+    #    algorithm: PBEWITHHMACSHA512ANDAES_256
+    #    password: a2lua2lt
+    property:
+      prefix: "im@kin.kim["
+      suffix: "]"
+    private-key-format: pem
+    public-key-format: pem
+    #    private-key-location: classpath:id_rsa_pkcs8
+    #    public-key-location: classpath:id_rsa_pkcs8.pem
+    private-key-location: file:C:\\Users\\choky\\.ssh\\id_rsa_pkcs8
+    public-key-location: file:C:\\Users\\choky\\.ssh\\id_rsa_pkcs8.pem
+kim:
+  kin:
+    logpath: ${user.home}/data/logs
