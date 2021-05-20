@@ -5,73 +5,114 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
+import java.io.Serializable;
+
 
 /**
  * @author choky
  */
 @Table("kk_user_info")
-public class UserInfo {
+public class UserInfo implements Serializable {
 
-	@Id
-	private long id;
-	@Column
-	private String username;
-	@Column
-	@JsonIgnore
-	private String password;
-	@Column
-	private Boolean enabled=true;
+    @Id
+    private long id;
+    @Column
+    private String username;
+    @Column
+    @JsonIgnore
+    private String password;
+    @Column
+    private Boolean enabled = true;
 
-	@Column
-	private String avatar;
-	@Column
-	private String introduction;
+    @Column
+    private String avatar;
+    @Column
+    private String introduction;
 
-	public String getUsername() {
-		return username;
-	}
+    private String email;
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    private String mobile;
 
-	public String getPassword() {
-		return password;
-	}
+    private String gender;
+    private String remoteAddress;
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public String getRemoteAddress() {
+        return remoteAddress;
+    }
 
-	public long getId() {
-		return id;
-	}
+    public void setRemoteAddress(String remoteAddress) {
+        this.remoteAddress = remoteAddress;
+    }
 
-	public void setId(long id) {
-		this.id = id;
-	}
+    public String getGender() {
+        return gender;
+    }
 
-	public Boolean getEnabled() {
-		return enabled;
-	}
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 
-	public void setEnabled(Boolean enabled) {
-		this.enabled = enabled;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public String getAvatar() {
-		return avatar;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public void setAvatar(String avatar) {
-		this.avatar = avatar;
-	}
+    public String getMobile() {
+        return mobile;
+    }
 
-	public String getIntroduction() {
-		return introduction;
-	}
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
 
-	public void setIntroduction(String introduction) {
-		this.introduction = introduction;
-	}
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getIntroduction() {
+        return introduction;
+    }
+
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
+    }
 }
