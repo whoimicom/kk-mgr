@@ -1,7 +1,6 @@
 package kim.kin.rest;
 
 
-import kim.kin.config.security.JwtTokenUtil;
 import kim.kin.config.security.UserDetailsServiceImpl;
 import kim.kin.kklog.KkLog;
 import kim.kin.model.MetaVO;
@@ -23,13 +22,11 @@ import java.util.*;
 @CrossOrigin
 public class JwtAuthenticationController {
     private final AuthenticationManager authenticationManager;
-    private final JwtTokenUtil jwtTokenUtil;
     private final UserDetailsServiceImpl userDetailsService;
     private final UserInfoService userInfoService;
 
-    public JwtAuthenticationController(AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil, UserDetailsServiceImpl userDetailsService, UserInfoService userInfoService) {
+    public JwtAuthenticationController(AuthenticationManager authenticationManager, UserDetailsServiceImpl userDetailsService, UserInfoService userInfoService) {
         this.authenticationManager = authenticationManager;
-        this.jwtTokenUtil = jwtTokenUtil;
         this.userDetailsService = userDetailsService;
         this.userInfoService = userInfoService;
     }
@@ -41,12 +38,7 @@ public class JwtAuthenticationController {
         String password = userInfoDTO.getPassword();
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-
-        final String token = jwtTokenUtil.generateToken(userDetails);
-        Map<String, Object> authInfo = new HashMap<>(1) {{
-            put("token", "Bearer " + token);
-        }};
-        return ResponseEntity.ok(authInfo);
+        return ResponseEntity.ok(userDetails);
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)

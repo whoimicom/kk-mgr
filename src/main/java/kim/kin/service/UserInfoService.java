@@ -8,4 +8,6 @@ import kim.kin.model.UserInfo;
  */
 public interface UserInfoService {
     UserInfo save(UserInfoDTO dto);
+
+    UserInfo findByUsername(String username);
 }
