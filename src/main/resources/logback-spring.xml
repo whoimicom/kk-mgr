@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+    <jmxConfigurator/>
+    <springProperty scope="context" name="contextName" source="server.servlet.context-path"/>
+    <springProperty scope="context" name="logpath" source="kim.kin.logpath"/>
+    <property name="path" value="${logpath}"/>
+    <property name="level" value="info"/>
+    <property name="maxHistory" value="90"/>
+    <property name="maxFileSize" value="512MB"/>
+    <property name="totalSizeCap" value="10240MB"/>
+    <property name="pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%-5level] %logger{36} - %msg%n"/>
+    <property name="otherPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} \t %-5p \t %-10t \t %C \t %4L \t %m%n"/>
+    <property name="patternColoring"
+              value="%red(%d{yyyy-MM-dd HH:mm:ss}) %green([%thread]) %highlight(%-5level) %boldMagenta(%logger{36}) - %gray(%msg%n)"/>
+    <contextName>${contextName}</contextName>
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${patternColoring}</pattern>
+        </encoder>
+    </appender>
+    <appender name="ALL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${path}/${contextName}/all.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${path}/${contextName}/%d{yyyyMMdd}.all.%i.log</fileNamePattern>
+            <maxFileSize>${maxFileSize}</maxFileSize>
+            <maxHistory>${maxHistory}</maxHistory>
+            <totalSizeCap>${totalSizeCap}</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${pattern}</pattern>
+        </encoder>
+    </appender>
+    <appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${path}/${contextName}/error.log</file>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${path}/${contextName}/%d{yyyyMMdd}.error.%i.log</fileNamePattern>
+            <maxFileSize>${maxFileSize}</maxFileSize>
+            <maxHistory>${maxHistory}</maxHistory>
+            <totalSizeCap>${totalSizeCap}</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${pattern}</pattern>
+        </encoder>
+    </appender>
+    <appender name="INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${path}/${contextName}/info.log</file>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${path}/${contextName}/%d{yyyyMMdd}.info.%i.log</fileNamePattern>
+            <maxFileSize>${maxFileSize}</maxFileSize>
+            <maxHistory>${maxHistory}</maxHistory>
+            <totalSizeCap>${totalSizeCap}</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <!--    config data jpa log-->
+    <!--    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE"/>-->
+    <!--    <logger name="org.hibernate.type.descriptor.sql.BasicExtractor" level="DEBUG"/>-->
+    <!--    <logger name="org.hibernate.SQL" level="DEBUG"/>-->
+    <!--    <logger name="org.hibernate.engine.QueryParameters" level="DEBUG"/>-->
+    <!--    <logger name="org.hibernate.engine.query.HQLQueryPlan" level="DEBUG"/>-->
+
+    <!--     config jdbc log-->
+    <logger name="org.springframework.jdbc.core.JdbcTemplate" level="debug"/>
+    <logger name="org.springframework.jdbc.core.StatementCreatorUtils" level="debug"/>
+
+    <!-- root level  DEBUG -->
+    <root>
+        <level value="${level}"/>
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="ERROR"/>
+        <appender-ref ref="INFO"/>
+        <appender-ref ref="ALL"/>
+    </root>
+    <appender name="CLASS-APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>${level}</level>
+        </filter>
+        <encoder>
+            <pattern>${pattern}</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${path}/${contextName}/%d{yyyyMMdd}.class.%i.log</fileNamePattern>
+            <maxFileSize>${maxFileSize}</maxFileSize>
+            <maxHistory>${maxHistory}</maxHistory>
+            <totalSizeCap>${totalSizeCap}</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+    <logger name="busiclassLog" level="INFO" additivity="true">
+        <appender-ref ref="CLASS-APPENDER"/>
+    </logger>
+
+    <!--    #normal  -->
+    <!--    private Logger busiclassLog = LoggerFactory.getLogger("busiclassLog");  -->
+    <!--    #lomok  -->
+    <!--    @Slf4j(topic = "busiclassLog")  -->
+    <!--    <logger name="kin.kim" level="${level}" additivity="false">-->
+    <!--        <appender-ref ref="ALL"/>-->
+    <!--        <appender-ref ref="ERROR"/>-->
+    <!--    </logger>-->
+
+
+</configuration>

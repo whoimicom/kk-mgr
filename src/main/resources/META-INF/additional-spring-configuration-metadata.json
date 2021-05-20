@@ -1,0 +1,29 @@
+{
+  "properties": [
+    {
+      "name": "kim.kin.channel-no",
+      "type": "java.lang.String",
+      "description": "Description for kk.channel-no."
+    },
+    {
+      "name": "kim.kin.file-path",
+      "type": "java.lang.String",
+      "description": "Description for kk.file-path."
+    },
+    {
+      "name": "kim.kin.logpath",
+      "type": "java.lang.String",
+      "description": "Description for kim.kin.logpath."
+    },
+    {
+      "name": "jwt.base64EncodedSecretKey",
+      "type": "java.lang.String",
+      "description": "Description for jwt.base64EncodedSecretKey."
+    },
+    {
+      "name": "jwt.expiration",
+      "type": "java.lang.String",
+      "description": "Description for jwt.expiration."
+    }
+  ]
+}

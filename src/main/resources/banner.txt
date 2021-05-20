@@ -1,0 +1,6 @@
+
+ +-+-+-+-+-+-+-+
+ |k|i|n|.|k|i|m|
+ +-+-+-+-+-+-+-+
+
+ :: Spring Boot ::     ${spring-boot.formatted-version}

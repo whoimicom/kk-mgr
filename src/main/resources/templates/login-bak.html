@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" >
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="edge" />
+    <title>kk</title>
+    <link rel="shortcut icon" type="image/png" th:href="@{/img/favicon.ico}" />
+<!--    <link rel="stylesheet" th:href="@{css/login.css}" type="text/css">-->
+<!--    <link rel="stylesheet" th:href="@{css/iCheck/minimal/green.css}" type="text/css">-->
+<!--    <link rel="stylesheet" th:href="@{css/app.css}" type="text/css">-->
+<!--    <link rel="stylesheet" th:href="@{css/animate/animate.min.css}" type="text/css">-->
+<!--    <script th:src="@{js/jquery.min.js}"></script>-->
+<!--    <script th:src="@{js/iCheck/icheck.js}"></script>-->
+<!--    <script th:src="@{js/bootstrap-notify/bootstrap-notify.min.js}"></script>-->
+<!--    <script th:src="@{js/common.js}"></script>-->
+</head>
+<body>
+<!-- Form-->
+<div class="form">
+    <div class="form-toggle"></div>
+    <div class="form-panel one">
+        <div class="form-header">
+            <h1 id="login-title">账户登录</h1>
+        </div>
+        <div class="form-content">
+            <form action="#" method="post" onsubmit="return false">
+                <div class="form-group type1">
+                    <label>账号</label>
+                    <input type="text" name="username" />
+                </div>
+                <div class="form-group type1">
+                    <label>密码</label>
+                    <input type="password" name="password" />
+                </div>
+<!--                <div class="form-group type1" style="display:inline-block">-->
+<!--                    <label>验证码</label>-->
+<!--                    <input type="text" name="imageCode" style="width:50%; display:inline-block" />-->
+<!--                    <img data-th-src="@{/image/code}" id="validateCodeImg" onclick="reloadCode()" style="display:inline-block;margin-left:.2rem" />-->
+<!--                </div>-->
+<!--                <div class="form-group type2" style="display: none">-->
+<!--                    <label>手机号</label>-->
+<!--                    <input type="text" name="mobile" />-->
+<!--                </div>-->
+<!--                <div class="form-group type2" style="display: none">-->
+<!--                    <label>短信验证码</label>-->
+<!--                    <input type="text" name="smsCode" />-->
+<!--                </div>-->
+<!--                <div class="form-group type2" style="display: none">-->
+<!--                    <a href="javascript:void(0)" onclick="sendCode()" style="color: #32c787;font-weight: 600">发送短信验证码</a>-->
+<!--                    <a href="javascript:void(0)" class="type2" id="form-login" style="color: #32c787;font-weight: 600;display: none;">账号密码登录</a>-->
+<!--                </div>-->
+<!--                <div class="form-group" style="margin: 0;">-->
+<!--                    <p class="type1"><input type="checkbox"  name="remember-me" />&nbsp;&nbsp;记住我</p>-->
+<!--                    <a href="javascript:void(0)" class="type1" id="mobile-login" style="color: #32c787;font-weight: 600">短信验证码登录</a>-->
+<!--                </div>-->
+<!--                <div class="form-group" style="margin:0;justify-content:start;">-->
+<!--                    <a href="javascript:void(0)" id="social-login" style="color: #32c787;font-weight: 600">使用社交账号登录：</a>&nbsp;&nbsp;-->
+<!--                    <a href="/login/qq" title="QQ登录"><img th:src="@{img/social/QQ_bind.svg}" style="width: 1.4rem;"/></a>&nbsp;&nbsp;&nbsp;&nbsp;-->
+<!--                    <a href="/login/weixin" title="微信登录"><img th:src="@{img/social/wechat_bind.svg}" style="width: 1.7rem;margin-top: -1px;"/></a>-->
+<!--                </div>-->
+                <div class="form-group">
+                    <button class="type1" onclick="formLogin()" id="form-login-button" type="submit">登录</button>
+                    <button class="type2" onclick="mobileLogin()" id="mobile-login-button" type="submit" style="display: none">登录</button>
+                </div>
+            </form>
+        </div>
+    </div>
+<!--    <div class="form-panel two">-->
+<!--        <div class="form-header">-->
+<!--            <h1>账户注册</h1>-->
+<!--        </div>-->
+<!--        <div class="form-content">-->
+<!--            <div class="form-group">-->
+<!--                <label>账号</label>-->
+<!--                <input type="text" name="username" />-->
+<!--            </div>-->
+<!--            <div class="form-group">-->
+<!--                <label>密码</label>-->
+<!--                <input type="password" name="password" />-->
+<!--            </div>-->
+<!--            <div class="form-group">-->
+<!--                <label>确认密码</label>-->
+<!--                <input type="password" name="cpassword" />-->
+<!--            </div>-->
+<!--            <div class="form-group">-->
+<!--                <button onclick="regist()">注册</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+</div>
+<div data-th-include="layout/footer"></div>
+</body>
+<script th:inline="javascript">
+
+    // var ctx = [[@{/}]];
+
+    // button.addEventListener("click", ev => {})
+    function login() {
+        let username = loginForm.username.value;
+        let password = loginForm.password.value;
+        // alert(username)
+        // alert(password)
+        const url = 'http://localhost:10000/kk-api/authenticate';
+        var data = {username: username, password: password};
+        fetch('https://www.baidu.com/search/error.html?a=1&b=2', { // 在URL中写上传递的参数
+            method: 'GET'
+        })
+            .then((res)=>{
+                return res.text()
+                location.href = ctx + 'index.html';
+            })
+            .then((res)=>{
+                console.log(res)
+            })
+
+
+        fetch(url, {
+            method: 'POST', // or 'PUT'
+            body: JSON.stringify(data), // data can be `string` or {object}!
+            headers: new Headers({
+                'Content-Type': 'application/json'
+            })
+        })
+            .then(res => res.json())
+            .then(value => {
+                console.log(value)
+                let token=value.token;
+                // location.href = ctx + 'index';
+
+                // fetch('http://localhost:10000/kk-api/index.html', {
+                //     method: 'post',
+                //     mode: 'no-cors',
+                //     headers: {
+                //         'Content-Type': 'application/x-www-form-urlencoded',
+                //         Authorization: 'Bearer ' + token,
+                //     },
+                // }).then(value1 => {return value1.text()})
+            })
+            .catch(error => console.error('Error:', error))
+            .then(response => console.log('Success:', response));
+        // fetch('/authenticate', {
+        //     method: 'POST',
+        //     headers: {
+        //         Accept: 'application/json',
+        //         'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify({
+        //         username: username,
+        //         password: password,
+        //     }),
+        // }).then(res => res.json())
+        //     .then((json) => {
+        //             console.log(json)
+        //             // location.href = ctx + 'index';
+        //             // const token = json.token;
+        //             //     fetch('http://192.168.188.128:9080/user/userid', {
+        //             //     method: 'post',
+        //             //     mode: 'no-cors',
+        //             //     headers: {
+        //             //         'Content-Type': 'application/x-www-form-urlencoded',
+        //             //         Authorization: token,
+        //             //     },
+        //             // }
+        //             // )
+        //             //     .then(res => res.json())
+        //             //     .then((data) => {
+        //             //         console.log(data);
+        //             //     })
+        //             //     .catch(err => console.log(err));
+        //         }
+        //     )
+        //     .catch(err => console.log(err));
+    }
+</script>
+</html>
