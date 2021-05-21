@@ -11,8 +11,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.DefaultRedirectStrategy;
+import org.springframework.security.web.RedirectStrategy;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -20,12 +27,14 @@ import java.util.*;
  */
 @RestController
 @CrossOrigin
-public class JwtAuthenticationController {
+public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
     private final UserDetailsServiceImpl userDetailsService;
     private final UserInfoService userInfoService;
+    private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
-    public JwtAuthenticationController(AuthenticationManager authenticationManager, UserDetailsServiceImpl userDetailsService, UserInfoService userInfoService) {
+
+    public AuthenticationController(AuthenticationManager authenticationManager, UserDetailsServiceImpl userDetailsService, UserInfoService userInfoService) {
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
         this.userInfoService = userInfoService;
@@ -33,12 +42,13 @@ public class JwtAuthenticationController {
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     @KkLog
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody UserInfoDTO userInfoDTO) {
+    public void createAuthenticationToken(HttpServletRequest request, HttpServletResponse response,@RequestBody UserInfoDTO userInfoDTO) throws IOException {
         String username = userInfoDTO.getUsername();
         String password = userInfoDTO.getPassword();
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        return ResponseEntity.ok(userDetails);
+//        return ResponseEntity.ok(userDetails);
+        redirectStrategy.sendRedirect(request, response, "/index.html");
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)

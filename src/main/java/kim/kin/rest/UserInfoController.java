@@ -1,8 +1,14 @@
 package kim.kin.rest;
 
 import kim.kin.kklog.KkLog;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.security.web.savedrequest.RequestCache;
+import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,18 +24,10 @@ import java.io.IOException;
  */
 @Controller
 public class UserInfoController {
-    private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+    private final Logger logger = LoggerFactory.getLogger(UserInfoController.class);
+    private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+    private RequestCache requestCache = new HttpSessionRequestCache();
 
-    @RequestMapping({"/hello"})
-    public String firstPage() {
-        return "Hello World";
-    }
-
-    @RequestMapping("/login.html")
-    @KkLog
-    public String login() {
-        return "login.html";
-    }
 
     @RequestMapping("/login-error.html")
     public String loginError(Model model) {
@@ -37,30 +35,34 @@ public class UserInfoController {
         return "login.html";
     }
 
-//    @GetMapping("/login")
-//    public String login(HttpServletRequest request, HttpServletResponse response) {
-////        SavedRequest savedRequest = requestCache.getRequest(request, response);
-////        if (savedRequest != null) {
-////            String redirectUrl = savedRequest.getRedirectUrl();
-////            log.info("引发跳转的请求是：{}", redirectUrl);
-////        }
-//        return "login";
-//    }
+    @RequestMapping("/logout")
+    public String logout(Model model) {
+        model.addAttribute("loginError", true);
+        return "index.html";
+    }
+
+
+    @GetMapping("/login.html")
+    @KkLog
+    public String login(HttpServletRequest request, HttpServletResponse response) {
+        SavedRequest savedRequest = requestCache.getRequest(request, response);
+        if (savedRequest != null) {
+            String redirectUrl = savedRequest.getRedirectUrl();
+            logger.info("引发跳转的请求是：{}", redirectUrl);
+        }
+        return "login.html";
+    }
 
     @GetMapping("/")
     public void success(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        redirectStrategy.sendRedirect(request, response, "/login.html");
+        redirectStrategy.sendRedirect(request, response, "/index.html");
     }
 
-    //    @GetMapping("index")
-//    public String index(Authentication authentication, Model model) {
-//        model.addAttribute("user", authentication.getPrincipal());
-//        return "index";
-//    }
-
-    @RequestMapping("index.html")
-    public String index() {
-        return "/layout/index.html";
+    @GetMapping("/index.html")
+    public String index(Authentication authentication, Model model) {
+        model.addAttribute("user", authentication.getPrincipal());
+        return "index.html";
     }
+
 
 }

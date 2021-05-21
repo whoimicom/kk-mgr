@@ -13,7 +13,7 @@ import java.io.IOException;
  * @author choky
  */
 @Component
-public class KkInvalidSessionStrategy implements InvalidSessionStrategy {
+public class InvalidSessionStrategyImpl implements InvalidSessionStrategy {
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
     @Override
     public void onInvalidSessionDetected(HttpServletRequest request, HttpServletResponse response) throws IOException {

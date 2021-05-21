@@ -19,7 +19,7 @@ import java.io.IOException;
  * @author choky
  */
 @Component
-public class KkAuthenticationFailureHandler implements AuthenticationFailureHandler {
+public class AuthenticationFailureHandlerImpl implements AuthenticationFailureHandler {
 
     private final ObjectMapper mapper = new ObjectMapper();
 

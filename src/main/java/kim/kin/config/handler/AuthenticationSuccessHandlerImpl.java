@@ -3,7 +3,8 @@ package kim.kin.config.handler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kim.kin.model.UserInfo;
 import kim.kin.utils.KkConstant;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.session.SessionRegistry;
@@ -21,16 +22,16 @@ import java.io.IOException;
  * @author choky
  */
 @Component
-public class KkAuthenticationSucessHandler implements AuthenticationSuccessHandler {
-
+public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHandler {
+    private final Logger logger= LoggerFactory.getLogger(AuthenticationSuccessHandlerImpl.class);
     private ObjectMapper mapper = new ObjectMapper();
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
     private SessionRegistry sessionRegistry;
 
-    public KkAuthenticationSucessHandler() {
+    public AuthenticationSuccessHandlerImpl() {
         super();
     }
-    public KkAuthenticationSucessHandler(SessionRegistry sessionRegistry) {
+    public AuthenticationSuccessHandlerImpl(SessionRegistry sessionRegistry) {
         this.sessionRegistry = sessionRegistry;
     }
     @Override
@@ -41,7 +42,8 @@ public class KkAuthenticationSucessHandler implements AuthenticationSuccessHandl
 
         Object principal = authentication.getPrincipal();
         UserInfo userInfo = (UserInfo) principal;
-        userInfo.setRemoteAddress(remoteAddress);
+//        userInfo.setRemoteAddress(remoteAddress);
+
 //        if (!LoginType.normal.equals(loginType)) {
 //            String sessionId = details.getSessionId();
 //            sessionRegistry.removeSessionInformation(sessionId);
@@ -52,7 +54,7 @@ public class KkAuthenticationSucessHandler implements AuthenticationSuccessHandl
 //
 //            // 社交账户登录成功后直接 重定向到主页
 //            if (LoginType.social.equals(loginType)) {
-//                redirectStrategy.sendRedirect(request, response, "/index");
+//                redirectStrategy.sendRedirect(request, response, "/layout/index");
 //            }
 //        }
         response.setContentType(KkConstant.CONTENT_TYPE_JSON_UTF8);

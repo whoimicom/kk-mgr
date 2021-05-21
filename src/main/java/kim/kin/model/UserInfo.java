@@ -34,15 +34,15 @@ public class UserInfo implements Serializable {
     private String mobile;
 
     private String gender;
-    private String remoteAddress;
-
-    public String getRemoteAddress() {
-        return remoteAddress;
-    }
-
-    public void setRemoteAddress(String remoteAddress) {
-        this.remoteAddress = remoteAddress;
-    }
+//    private String remoteAddress;
+//
+//    public String getRemoteAddress() {
+//        return remoteAddress;
+//    }
+//
+//    public void setRemoteAddress(String remoteAddress) {
+//        this.remoteAddress = remoteAddress;
+//    }
 
     public String getGender() {
         return gender;
