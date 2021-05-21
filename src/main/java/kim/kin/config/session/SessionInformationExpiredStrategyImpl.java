@@ -14,7 +14,7 @@ import java.io.IOException;
  * @author choky
  */
 @Component
-public class KkSessionInformationExpiredStrategy implements SessionInformationExpiredStrategy {
+public class SessionInformationExpiredStrategyImpl implements SessionInformationExpiredStrategy {
 
     private final ObjectMapper mapper = new ObjectMapper();
 

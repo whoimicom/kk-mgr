@@ -1,12 +1,11 @@
 package kim.kin.config.security;
 
-import kim.kin.config.handler.KkAccessDeniedHandler;
-import kim.kin.config.handler.KkAuthenticationFailureHandler;
-import kim.kin.config.handler.KkAuthenticationSucessHandler;
-import kim.kin.config.handler.KkLogoutHandler;
-import kim.kin.config.session.KkInvalidSessionStrategy;
-import kim.kin.config.session.KkSessionInformationExpiredStrategy;
-import kim.kin.service.impl.KkUserDetailService;
+import kim.kin.config.handler.AccessDeniedHandlerImpl;
+import kim.kin.config.handler.AuthenticationFailureHandlerImpl;
+import kim.kin.config.handler.AuthenticationSuccessHandlerImpl;
+import kim.kin.config.handler.LogoutHandlerImpl;
+import kim.kin.config.session.InvalidSessionStrategyImpl;
+import kim.kin.config.session.SessionInformationExpiredStrategyImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,20 +31,19 @@ import javax.sql.DataSource;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final KkAuthenticationFailureHandler kkAuthenticationFailureHandler;
-    private final KkUserDetailService kkUserDetailService;
-    private final KkInvalidSessionStrategy kkInvalidSessionStrategy;
-    private final KkSessionInformationExpiredStrategy kkSessionInformationExpiredStrategy;
-    private final KkAccessDeniedHandler kkAccessDeniedHandler;
+    private final AuthenticationFailureHandlerImpl authenticationFailureHandlerImpl;
+    private final UserDetailsServiceImpl userDetailsServiceImpl;
+    private final InvalidSessionStrategyImpl invalidSessionStrategyImpl;
+    private final SessionInformationExpiredStrategyImpl sessionInformationExpiredStrategyImpl;
+    private final AccessDeniedHandlerImpl accessDeniedHandlerImpl;
     private final DataSource dataSource;
 
-    public WebSecurityConfig(KkAuthenticationFailureHandler kkAuthenticationFailureHandler, KkUserDetailService kkUserDetailService, KkInvalidSessionStrategy kkInvalidSessionStrategy, KkSessionInformationExpiredStrategy kkSessionInformationExpiredStrategy, KkAccessDeniedHandler kkAccessDeniedHandler, DataSource dataSource) {
-
-        this.kkAuthenticationFailureHandler = kkAuthenticationFailureHandler;
-        this.kkUserDetailService = kkUserDetailService;
-        this.kkInvalidSessionStrategy = kkInvalidSessionStrategy;
-        this.kkSessionInformationExpiredStrategy = kkSessionInformationExpiredStrategy;
-        this.kkAccessDeniedHandler = kkAccessDeniedHandler;
+    public WebSecurityConfig(AuthenticationFailureHandlerImpl authenticationFailureHandlerImpl, UserDetailsServiceImpl userDetailsServiceImpl, InvalidSessionStrategyImpl invalidSessionStrategyImpl, SessionInformationExpiredStrategyImpl sessionInformationExpiredStrategyImpl, AccessDeniedHandlerImpl accessDeniedHandlerImpl, DataSource dataSource) {
+        this.authenticationFailureHandlerImpl = authenticationFailureHandlerImpl;
+        this.userDetailsServiceImpl = userDetailsServiceImpl;
+        this.invalidSessionStrategyImpl = invalidSessionStrategyImpl;
+        this.sessionInformationExpiredStrategyImpl = sessionInformationExpiredStrategyImpl;
+        this.accessDeniedHandlerImpl = accessDeniedHandlerImpl;
         this.dataSource = dataSource;
     }
 
@@ -67,24 +65,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        String[] anonResourcesUrl = {"/", "/css/**", "/js/**", "/fonts/**", "/img/**", "/assets/**", "*.svg", "*.png", "*.js", "*.css", "*.ico"};
-        httpSecurity.exceptionHandling().accessDeniedHandler(kkAccessDeniedHandler);
+        String[] anonResourcesUrl = {"/css/**", "/js/**", "/fonts/**", "/img/**", "*.svg", "*.png", "*.js", "*.css", "*.ico"};
+        httpSecurity.exceptionHandling().accessDeniedHandler(accessDeniedHandlerImpl);
         // formLogin
         httpSecurity.formLogin()
-                .loginPage("/login")
-                .successHandler(kkAuthenticationSucessHandler())
-                .failureHandler(kkAuthenticationFailureHandler);
+                .loginPage("/login.html")
+                .loginProcessingUrl("/signin")
+                .successHandler(authenticationSucessHandler())
+                .failureHandler(authenticationFailureHandlerImpl);
         // rememberMe
         httpSecurity
                 .rememberMe()
                 .tokenRepository(persistentTokenRepository())
                 .tokenValiditySeconds(3600)
-                .userDetailsService(kkUserDetailService);
+                .userDetailsService(userDetailsServiceImpl);
         // sessionManagement
         httpSecurity.sessionManagement()
-                .invalidSessionStrategy(kkInvalidSessionStrategy)
+                .invalidSessionStrategy(invalidSessionStrategyImpl)
                 .maximumSessions(1)
-                .expiredSessionStrategy(kkSessionInformationExpiredStrategy)
+                .expiredSessionStrategy(sessionInformationExpiredStrategyImpl)
                 .sessionRegistry(sessionRegistry());
         //logout
         httpSecurity.logout()
@@ -93,10 +92,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/")
                 .deleteCookies("JSESSIONID");
         // authorizeRequests
-        httpSecurity.authorizeRequests() // 授权配置
+        httpSecurity.authorizeRequests()
                 .antMatchers(anonResourcesUrl).permitAll()
                 .antMatchers(
-                        "/login"
+                        "/login.html",
+                        "/authenticate",
+                        "/logout.html",
+                        "/logout"
                 ).permitAll()
                 .anyRequest().authenticated();
         // disable csrf
@@ -109,8 +111,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new SessionRegistryImpl();
     }
 
-    public KkAuthenticationSucessHandler kkAuthenticationSucessHandler() {
-        return new KkAuthenticationSucessHandler(sessionRegistry());
+    public AuthenticationSuccessHandlerImpl authenticationSucessHandler() {
+        return new AuthenticationSuccessHandlerImpl(sessionRegistry());
     }
 
     @Bean
@@ -123,8 +125,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public LogoutHandler logoutHandler() {
-        KkLogoutHandler kkLogoutHandler = new KkLogoutHandler();
-        kkLogoutHandler.setSessionRegistry(sessionRegistry());
-        return kkLogoutHandler;
+        LogoutHandlerImpl logoutHandlerImpl = new LogoutHandlerImpl();
+        logoutHandlerImpl.setSessionRegistry(sessionRegistry());
+        return logoutHandlerImpl;
     }
 }

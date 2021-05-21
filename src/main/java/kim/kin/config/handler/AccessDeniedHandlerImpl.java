@@ -19,7 +19,7 @@ import java.io.IOException;
  * @author choky
  */
 @Component
-public class KkAccessDeniedHandler implements AccessDeniedHandler {
+public class AccessDeniedHandlerImpl implements AccessDeniedHandler {
     private ObjectMapper mapper = new ObjectMapper();
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 

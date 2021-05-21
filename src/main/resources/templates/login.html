@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,40 +9,22 @@
     <title>Signin Template · Bootstrap v5.0</title>
     <link rel="shortcut icon" type="image/png" th:href="@{/img/favicon.ico}"/>
     <link th:href="@{css/bootstrap/bootstrap.min.css}" type="text/css" rel="stylesheet"/>
-    <link th:href="@{css/bootstrap/signin.css}" type="text/css" rel="stylesheet"/>
-
-    <style>
-        .bd-placeholder-img {
-            font-size: 1.125rem;
-            text-anchor: middle;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            user-select: none;
-        }
-
-        @media (min-width: 768px) {
-            .bd-placeholder-img-lg {
-                font-size: 3.5rem;
-            }
-        }
-    </style>
-
+    <link th:href="@{css/bootstrap/login.css}" type="text/css" rel="stylesheet"/>
 </head>
 <body class="text-center">
 
 <main class="form-signin">
-    <form id="loginForm" name="loginForm">
+    <form action="#" method="post" onsubmit="return false">
         <img class="mb-4" data-th-src="@{/img/bootstrap-logo.svg}" alt="" width="72" height="57">
         <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
         <div class="form-floating">
-            <input type="test" class="form-control" name="username" id="username" value="kinkim" placeholder="username">
-            <label for="username">Username</label>
+            <input type="text" class="form-control" name="username" value="kinkim" placeholder="username">
+            <!--            <label for="username">Username</label>-->
         </div>
         <div class="form-floating">
-            <input type="password" class="form-control" name="password" id="password" value="123456"
-                   placeholder="Password">
-            <label for="password">Password</label>
+            <input type="password" class="form-control" name="password" value="123456" placeholder="Password">
+            <!--            <label for="password">Password</label>-->
         </div>
 
         <div class="checkbox mb-3">
@@ -59,44 +40,44 @@
 
 </body>
 <script th:inline="javascript">
-    // const ctx = [[@{/}]];
-    // button.addEventListener("click", ev => {})
-    function login() {
-        let username = loginForm.username.value;
-        let password = loginForm.password.value;
-        // alert(username)
-        // alert(password)
-        const url = 'http://localhost:10000/kk-api/authenticate';
-        var data = {username: username, password: password};
-        fetch(url, {
-            method: 'POST', // or 'PUT'
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data) // data can be `string` or {object}!
-        })
-            .then(res => res.json())
-            .then(value => {
-                var atoken = value.token;
-                console.log(atoken)
-                fetch('http://localhost:10000/kk-api/index.html', {
-                    method: 'post',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: atoken,
-                    }
-                }).then(value1 => {
-                    // location.href = ctx + 'layout/index.html';
-                    // document.getElementById("text-center").innerHTML = value1.text();
-                    let htmlStream = value1.text();
-                    document.write( htmlStream);
-                    return htmlStream
-                })
+    const ctx = [[@{/}]];
+        // button.addEventListener("click", ev => {})
+        function login() {
+            // let username = loginForm.username.value;
+            // let password = loginForm.password.value;
+            // alert(username)
+            // alert(password)
+            const url = ctx + 'signin';
+            // var data = {username: username, password: password};
+            fetch(url, {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                // body: JSON.stringify(data) // data can be `string` or {object}!
             })
-            .catch(error => console.error('Error:', error))
-            .then(response => console.log('Success:', response));
+                .then(res => res.json())
+                .then(value => {
+                    console.log(value)
+                    location.href = ctx + 'index.html';
+                    // fetch('http://localhost:10000/kk-api/index.html', {
+                    //     method: 'post',
+                    //     headers: {
+                    //         'Content-Type': 'application/json',
+                    //         Authorization: atoken,
+                    //     }
+                    // }).then(value1 => {
+                    //     // location.href = ctx + 'layout/index.html';
+                    //     // document.getElementById("text-center").innerHTML = value1.text();
+                    //     let htmlStream = value1.text();
+                    //     document.write(htmlStream);
+                    //     return htmlStream
+                    // })
+                })
+                .catch(error => console.error('Error:', error))
+                .then(response => console.log('Success:', response));
 
-    }
+        }
 
 
 </script>

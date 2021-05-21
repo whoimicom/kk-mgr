@@ -15,9 +15,4 @@ public class KkMgrApplication {
         SpringApplication.run(KkMgrApplication.class, args);
     }
 
-//    @GetMapping("/")
-//    public String index() {
-//        return "kk service started successfully";
-//    }
-
 }
