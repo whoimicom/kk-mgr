@@ -14,7 +14,7 @@
 <body class="text-center">
 
 <main class="form-signin">
-    <form action="#" method="post" onsubmit="return false">
+    <form action="signin" method="post" >
         <img class="mb-4" data-th-src="@{/img/bootstrap-logo.svg}" alt="" width="72" height="57">
         <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
@@ -32,7 +32,7 @@
                 <input type="checkbox" value="remember-me"> Remember me
             </label>
         </div>
-        <button class="w-100 btn btn-lg btn-primary" id="signin" onclick="login()" type="button">Sign in</button>
+        <button class="w-100 btn btn-lg btn-primary" id="signin"  type="submit">Sign in</button>
         <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
     </form>
 </main>
@@ -48,12 +48,13 @@
             // alert(username)
             // alert(password)
             const url = ctx + 'signin';
-            // var data = {username: username, password: password};
+            const data = {username: this.username, password: this.password};
             fetch(url, {
                 method: 'POST', // or 'PUT'
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/x-www-form-urlencoded',
                 },
+                body: JSON.stringify(data)
                 // body: JSON.stringify(data) // data can be `string` or {object}!
             })
                 .then(res => res.json())
