@@ -1,6 +1,7 @@
 package kim.kin.config.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import kim.kin.model.KkUserDetails;
 import kim.kin.model.UserInfo;
 import kim.kin.utils.KkConstant;
 import org.slf4j.Logger;
@@ -41,8 +42,8 @@ public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHa
         String remoteAddress = details.getRemoteAddress();
 
         Object principal = authentication.getPrincipal();
-        UserInfo userInfo = (UserInfo) principal;
-//        userInfo.setRemoteAddress(remoteAddress);
+        KkUserDetails userDetails = (KkUserDetails) principal;
+        userDetails.setRemoteAddress(remoteAddress);
 
 //        if (!LoginType.normal.equals(loginType)) {
 //            String sessionId = details.getSessionId();
@@ -54,11 +55,13 @@ public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHa
 //
 //            // 社交账户登录成功后直接 重定向到主页
 //            if (LoginType.social.equals(loginType)) {
-//                redirectStrategy.sendRedirect(request, response, "/layout/index");
+//                redirectStrategy.sendRedirect(request, response, "/index.html");
 //            }
 //        }
-        response.setContentType(KkConstant.CONTENT_TYPE_JSON_UTF8);
-        response.getWriter().write(mapper.writeValueAsString(ResponseEntity.ok()));
+
+//        response.setContentType(KkConstant.CONTENT_TYPE_JSON_UTF8);
+//        response.getWriter().write(mapper.writeValueAsString(ResponseEntity.ok()));
+        redirectStrategy.sendRedirect(request, response, "/index.html");
     }
 
 }
