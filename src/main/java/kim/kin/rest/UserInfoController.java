@@ -35,11 +35,11 @@ public class UserInfoController {
         return "login.html";
     }
 
-    @RequestMapping("/logout")
-    public String logout(Model model) {
-        model.addAttribute("loginError", true);
-        return "index.html";
-    }
+//    @RequestMapping("/logout")
+//    public String logout(Model model) {
+//        model.addAttribute("loginError", true);
+//        return "index.html";
+//    }
 
 
     @GetMapping("/login.html")
@@ -54,12 +54,16 @@ public class UserInfoController {
     }
 
     @GetMapping("/")
+    @KkLog
     public void success(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        logger.info(" @GetMapping(\"/\")");
         redirectStrategy.sendRedirect(request, response, "/index.html");
     }
 
     @GetMapping("/index.html")
+    @KkLog
     public String index(Authentication authentication, Model model) {
+        logger.info(" @GetMapping(\"/index.html\")");
         model.addAttribute("user", authentication.getPrincipal());
         return "index.html";
     }

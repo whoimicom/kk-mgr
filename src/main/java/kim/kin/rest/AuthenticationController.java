@@ -57,11 +57,11 @@ public class AuthenticationController {
         return ResponseEntity.ok(userInfoService.save(user));
     }
 
-    @PostMapping(value = "/user/logout")
-    @KkLog
-    public ResponseEntity<?> logout() {
-        return ResponseEntity.ok("SUCCESS");
-    }
+//    @PostMapping(value = "/user/logout")
+//    @KkLog
+//    public ResponseEntity<?> logout() {
+//        return ResponseEntity.ok("SUCCESS");
+//    }
 
     @PostMapping(value = "/getInfo")
     @KkLog

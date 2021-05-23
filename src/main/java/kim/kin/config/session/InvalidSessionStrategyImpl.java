@@ -1,5 +1,7 @@
 package kim.kin.config.session;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.session.InvalidSessionStrategy;
@@ -14,10 +16,13 @@ import java.io.IOException;
  */
 @Component
 public class InvalidSessionStrategyImpl implements InvalidSessionStrategy {
+    private static final Logger logger = LoggerFactory.getLogger(InvalidSessionStrategyImpl.class);
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+
     @Override
     public void onInvalidSessionDetected(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        redirectStrategy.sendRedirect(request, response, "/logout");
+        logger.info("InvalidSessionStrategyImpl");
+//        redirectStrategy.sendRedirect(request, response, "/logout");
     }
 
 }

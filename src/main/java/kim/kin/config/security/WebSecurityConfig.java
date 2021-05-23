@@ -6,6 +6,7 @@ import kim.kin.config.handler.AuthenticationSuccessHandlerImpl;
 import kim.kin.config.handler.LogoutHandlerImpl;
 import kim.kin.config.session.InvalidSessionStrategyImpl;
 import kim.kin.config.session.SessionInformationExpiredStrategyImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,6 +21,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.session.InvalidSessionStrategy;
+import org.springframework.security.web.session.SimpleRedirectInvalidSessionStrategy;
 
 import javax.sql.DataSource;
 
@@ -47,11 +50,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         this.dataSource = dataSource;
     }
 
-//    @Autowired
-//    public void configureGlobal(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-//        authenticationManagerBuilder.userDetailsService(userDetailsServiceImpl).passwordEncoder(passwordEncoder());
-//    }
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -61,6 +59,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }
+
+    @Bean
+    public InvalidSessionStrategy  invalidSessionStrategy(){
+        return new SimpleRedirectInvalidSessionStrategy("/login.html");
     }
 
     @Override
@@ -81,7 +84,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .userDetailsService(userDetailsServiceImpl);
         // sessionManagement
         httpSecurity.sessionManagement()
-                .invalidSessionStrategy(invalidSessionStrategyImpl)
+//                .invalidSessionStrategy(invalidSessionStrategy())
+                .invalidSessionUrl("/login.html")
                 .maximumSessions(1)
                 .expiredSessionStrategy(sessionInformationExpiredStrategyImpl)
                 .sessionRegistry(sessionRegistry());
