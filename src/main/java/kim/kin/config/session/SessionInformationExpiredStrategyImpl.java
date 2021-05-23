@@ -2,6 +2,8 @@ package kim.kin.config.session;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kim.kin.utils.KkConstant;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.session.SessionInformationExpiredEvent;
@@ -15,11 +17,12 @@ import java.io.IOException;
  */
 @Component
 public class SessionInformationExpiredStrategyImpl implements SessionInformationExpiredStrategy {
-
+private static final Logger logger = LoggerFactory.getLogger(SessionInformationExpiredStrategyImpl.class);
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Override
     public void onExpiredSessionDetected(SessionInformationExpiredEvent event) throws IOException {
+        logger.info("SessionInformationExpiredStrategyImpl");
         event.getResponse().setContentType(KkConstant.CONTENT_TYPE_JSON_UTF8);
         event.getResponse().getWriter().write(mapper.writeValueAsString(new ResponseEntity<Object>("SessionInformationExpired", HttpStatus.BAD_REQUEST)));
     }
