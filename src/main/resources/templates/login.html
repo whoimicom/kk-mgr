@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity"
+      lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,7 +15,7 @@
 <body class="text-center">
 
 <main class="form-signin">
-    <form action="signin" method="post" >
+    <form action="signin" method="post">
         <img class="mb-4" data-th-src="@{/img/bootstrap-logo.svg}" alt="" width="72" height="57">
         <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
@@ -32,7 +33,7 @@
                 <input type="checkbox" value="remember-me"> Remember me
             </label>
         </div>
-        <button class="w-100 btn btn-lg btn-primary" id="signin"  type="submit">Sign in</button>
+        <button class="w-100 btn btn-lg btn-primary" id="signin" type="submit">Sign in</button>
         <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
     </form>
 </main>
@@ -40,45 +41,46 @@
 
 </body>
 <script th:inline="javascript">
-    const ctx = [[@{/}]];
-        // button.addEventListener("click", ev => {})
-        function login() {
-            // let username = loginForm.username.value;
-            // let password = loginForm.password.value;
-            // alert(username)
-            // alert(password)
-            const url = ctx + 'signin';
-            const data = {username: this.username, password: this.password};
-            fetch(url, {
-                method: 'POST', // or 'PUT'
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: JSON.stringify(data)
-                // body: JSON.stringify(data) // data can be `string` or {object}!
-            })
-                .then(res => res.json())
-                .then(value => {
-                    console.log(value)
-                    location.href = ctx + 'index.html';
-                    // fetch('http://localhost:10000/kk-api/index.html', {
-                    //     method: 'post',
-                    //     headers: {
-                    //         'Content-Type': 'application/json',
-                    //         Authorization: atoken,
-                    //     }
-                    // }).then(value1 => {
-                    //     // location.href = ctx + 'layout/index.html';
-                    //     // document.getElementById("text-center").innerHTML = value1.text();
-                    //     let htmlStream = value1.text();
-                    //     document.write(htmlStream);
-                    //     return htmlStream
-                    // })
-                })
-                .catch(error => console.error('Error:', error))
-                .then(response => console.log('Success:', response));
+    const ctxPath = /*[[@{/}]]*/'';
 
-        }
+    // button.addEventListener("click", ev => {})
+    function login() {
+        // let username = loginForm.username.value;
+        // let password = loginForm.password.value;
+        // alert(username)
+        // alert(password)
+        const url = ctxPath + 'signin';
+        const data = {username: this.username, password: this.password};
+        fetch(url, {
+            method: 'POST', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: JSON.stringify(data)
+            // body: JSON.stringify(data) // data can be `string` or {object}!
+        })
+            .then(res => res.json())
+            .then(value => {
+                console.log(value)
+                location.href = ctxPath + 'index.html';
+                // fetch('http://localhost:10000/kk-api/index.html', {
+                //     method: 'post',
+                //     headers: {
+                //         'Content-Type': 'application/json',
+                //         Authorization: atoken,
+                //     }
+                // }).then(value1 => {
+                //     // location.href = ctxPath + 'layout/index.html';
+                //     // document.getElementById("text-center").innerHTML = value1.text();
+                //     let htmlStream = value1.text();
+                //     document.write(htmlStream);
+                //     return htmlStream
+                // })
+            })
+            .catch(error => console.error('Error:', error))
+            .then(response => console.log('Success:', response));
+
+    }
 
 
 </script>
