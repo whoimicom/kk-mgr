@@ -29,9 +29,10 @@ spring:
     check-template-location: true
     suffix: .html
     encoding: UTF-8
-    content-type: text/html
     mode: HTML
     cache: false
+    servlet:
+      content-type: text/html
 management:
   server:
     port: 15000

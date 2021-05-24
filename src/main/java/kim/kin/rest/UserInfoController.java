@@ -73,7 +73,7 @@ public class UserInfoController {
     public String userInfo(Authentication authentication, Model model) {
         logger.info("GetMapping /userInfo.html");
         model.addAttribute("user", authentication.getPrincipal());
-        return "/user/userInfo.html";
+        return "user/userInfo.html";
     }
 
 

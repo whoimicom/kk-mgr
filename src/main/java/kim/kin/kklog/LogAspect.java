@@ -51,12 +51,12 @@ public class LogAspect {
         HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
         List<Object> collect = Arrays.stream(joinPoint.getArgs()).collect(Collectors.toList());
         Enumeration<String> headerNames = request.getHeaderNames();
-        logger.error("header:------------------------------------------------");
+/*        logger.error("header:------------------------------------------------");
         headerNames.asIterator().forEachRemaining(s -> {
             String header = request.getHeader(s);
             logger.info(s + " :" + header);
         });
-        logger.error("header:------------------------------------------------");
+        logger.error("header:------------------------------------------------");*/
         logger.info("ip:" + acquireIp(request) + " args:" + collect + " joinPoint:" + joinPoint);
         return result;
     }
