@@ -63,9 +63,17 @@ public class UserInfoController {
     @GetMapping("/index.html")
     @KkLog
     public String index(Authentication authentication, Model model) {
-        logger.info(" @GetMapping(\"/index.html\")");
+        logger.info("GetMapping /index.html");
         model.addAttribute("user", authentication.getPrincipal());
         return "index.html";
+    }
+
+    @GetMapping("/userInfo.html")
+    @KkLog
+    public String userInfo(Authentication authentication, Model model) {
+        logger.info("GetMapping /userInfo.html");
+        model.addAttribute("user", authentication.getPrincipal());
+        return "/user/userInfo.html";
     }
 
 
