@@ -62,7 +62,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public InvalidSessionStrategy  invalidSessionStrategy(){
+    public InvalidSessionStrategy invalidSessionStrategy() {
         return new SimpleRedirectInvalidSessionStrategy("/login.html");
     }
 
@@ -102,6 +102,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/login.html",
                         "/authenticate",
                         "/logout.html",
+                        "signin",
                         "/logout"
                 ).permitAll()
                 .anyRequest().authenticated();
