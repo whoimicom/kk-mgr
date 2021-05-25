@@ -46,13 +46,18 @@ public class UserInfoController {
 
     @GetMapping("/login.html")
     @KkLog
-    public String login(HttpServletRequest request, HttpServletResponse response) {
+    public String login(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         SavedRequest savedRequest = requestCache.getRequest(request, response);
         if (savedRequest != null) {
             String redirectUrl = savedRequest.getRedirectUrl();
-            logger.info("引发跳转的请求是：{}", redirectUrl);
+            logger.info("redirectUrl：{}", redirectUrl);
         }
-        return "login.html";
+        if (Optional.ofNullable(authentication).map(Authentication::getPrincipal).isPresent()) {
+            return "/index.html";
+        } else {
+            return "login.html";
+        }
+
     }
 
     @GetMapping("/")
@@ -63,9 +68,9 @@ public class UserInfoController {
             Object principal = principalOpt.get();
             logger.info(" / " + principal);
             model.addAttribute("user", principal);
-            redirectStrategy.sendRedirect(request, response, "index.html");
+            redirectStrategy.sendRedirect(request, response, "/index.html");
         } else {
-            redirectStrategy.sendRedirect(request, response, "login.html");
+            redirectStrategy.sendRedirect(request, response, "/login.html");
         }
     }
 

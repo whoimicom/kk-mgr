@@ -79,9 +79,9 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" onclick="userInfo()" href="#">
-                            <span data-feather="shopping-cart"></span>
-                            Products
+                        <a class="nav-link" onclick="loadMain(this,'userInfo.html' )"  href="#userinfo">
+                        <span data-feather="shopping-cart"></span>
+                        Products
                         </a>
                     </li>
                     <li class="nav-item">
@@ -292,8 +292,9 @@
 </body>
 <script th:inline="javascript">
     // button.addEventListener("click", ev => {})
-    function userInfo() {
-        const url = ctxPath + 'userInfo.html';
+    function loadMain(obj, path) {
+        //const url = ctxPath + "userInfo.html';
+        const url = ctxPath + path;
         fetch(url, {
             method: 'GET', // or 'PUT'
             headers: {
@@ -303,6 +304,11 @@
         })
             .then(res => res.text())
             .then(value => {
+                Array.from(document.getElementsByClassName("nav-link active")).forEach(function (item) {
+                    console.log(item);
+                    item.className='nav-link ';
+                });
+                obj["className"]='nav-link active';
                 document.getElementById("main-context").innerHTML = value
             })
             .catch(error => console.error('Error:', error))
