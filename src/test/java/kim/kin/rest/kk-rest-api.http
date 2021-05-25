@@ -1,0 +1,43 @@
+GET {{host}}/index.html
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json;charset=utf-8
+
+
+###
+
+GET {{host}}/userInfo.html
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json;charset=utf-8
+
+
+###
+
+#POST http://localhost/kk-mgr/authenticate
+#Accept: */*
+#Cache-Control: no-cache
+#Content-Type: application/json;charset=utf-8
+#
+#{"username":"kinkim","password":"123456"}
+#> {% client.global.set("auth_token", response.body.token); %}
+
+
+
+###
+
+POST {{host}}/signin?username=kinkim&password=123456
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/x-www-form-urlencoded;charset=UTF-8")
+
+
+
+
+
+
+
+
+
+
+

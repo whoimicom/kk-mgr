@@ -12,12 +12,14 @@ import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
 
 /**
  * @author choky
@@ -55,9 +57,16 @@ public class UserInfoController {
 
     @GetMapping("/")
     @KkLog
-    public void success(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        logger.info(" @GetMapping(\"/\")");
-        redirectStrategy.sendRedirect(request, response, "/index.html");
+    public void success(HttpServletRequest request, HttpServletResponse response, Authentication authentication, Model model) throws IOException {
+        Optional<Object> principalOpt = Optional.ofNullable(authentication.getPrincipal());
+        if (principalOpt.isPresent()) {
+            Object principal = principalOpt.get();
+            logger.info(" / " + principal);
+            model.addAttribute("user", principal);
+            redirectStrategy.sendRedirect(request, response, "index.html");
+        } else {
+            redirectStrategy.sendRedirect(request, response, "login.html");
+        }
     }
 
     @GetMapping("/index.html")
@@ -75,6 +84,5 @@ public class UserInfoController {
         model.addAttribute("user", authentication.getPrincipal());
         return "user/userInfo.html";
     }
-
 
 }
