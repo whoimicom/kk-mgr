@@ -95,8 +95,8 @@ public class UserInfoController {
     public String userInfo(Model model, Pageable pageable) {
         logger.info("GetMapping /userInfo.html");
 //        System.out.println(pageable);
-        Page<UserInfo> all = userInfoService.findAll(pageable);
-        model.addAttribute("all", all);
+        Page<UserInfo> page = userInfoService.findAll(pageable);
+        model.addAttribute("page", page);
         return "user/userInfo.html";
     }
 
