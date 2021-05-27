@@ -1,8 +1,14 @@
 package kim.kin.rest;
 
 import kim.kin.kklog.KkLog;
+import kim.kin.model.UserInfo;
+import kim.kin.service.UserInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
@@ -29,6 +35,8 @@ public class UserInfoController {
     private final Logger logger = LoggerFactory.getLogger(UserInfoController.class);
     private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
     private RequestCache requestCache = new HttpSessionRequestCache();
+    @Autowired
+    private UserInfoService userInfoService;
 
 
     @RequestMapping("/login-error.html")
@@ -84,9 +92,11 @@ public class UserInfoController {
 
     @GetMapping("/userInfo.html")
     @KkLog
-    public String userInfo(Authentication authentication, Model model) {
+    public String userInfo(Model model, Pageable pageable) {
         logger.info("GetMapping /userInfo.html");
-        model.addAttribute("user", authentication.getPrincipal());
+//        System.out.println(pageable);
+        Page<UserInfo> all = userInfoService.findAll(pageable);
+        model.addAttribute("all", all);
         return "user/userInfo.html";
     }
 
