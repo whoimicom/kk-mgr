@@ -61,7 +61,7 @@ public class UserInfoController {
             logger.info("redirectUrl：{}", redirectUrl);
         }
         if (Optional.ofNullable(authentication).map(Authentication::getPrincipal).isPresent()) {
-            return "/index.html";
+            return "redirect:/index.html";
         } else {
             return "login.html";
         }
@@ -94,10 +94,18 @@ public class UserInfoController {
     @KkLog
     public String userInfo(Model model, Pageable pageable) {
         logger.info("GetMapping /userInfo.html");
-//        System.out.println(pageable);
         Page<UserInfo> page = userInfoService.findAll(pageable);
         model.addAttribute("page", page);
         return "user/userInfo.html";
+    }
+
+    @GetMapping("/testFragment.html")
+    @KkLog
+    public String testFragment(Model model, Pageable pageable) {
+        logger.info("GetMapping /testFragment.html");
+        Page<UserInfo> page = userInfoService.findAll(pageable);
+        model.addAttribute("page", page);
+        return "user/testFragment.html";
     }
 
 }

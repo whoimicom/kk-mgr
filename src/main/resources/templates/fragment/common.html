@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity"
+      lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="kin.kim">
+    <meta name="generator" content="Hugo 0.83.1">
+    <title>kk-mgr</title>
+    <link rel="shortcut icon" type="image/png" th:href="@{/img/favicon.ico}"/>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{css/bootstrap/bootstrap.min.css}" type="text/css" rel="stylesheet"/>
+    <script th:src="@{js/bootstrap/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{js/bootstrap/cheatsheet.js}"></script>
+    <script th:inline="javascript">
+        const ctxPath = /*[[@{/}]]*/'';
+    </script>
+</head>
+<body>
+<header th:fragment="fragmentHeader" class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Company name</a>
+    <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"
+            aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+    <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+            <a class="nav-link" th:href="@{logout}">Sign out</a>
+        </li>
+    </ul>
+</header>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav th:fragment="fragmentSidebar" id="sidebarMenu"
+             class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+            <div class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">
+                            <span data-feather="home"></span>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="loadMain(this,'userInfo.html' )" href="#">
+                            <span data-feather="file"></span>
+                            UserInfo.html
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{testFragment.html}">
+                            <span data-feather="shopping-cart"></span>
+                            TestFragment
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="users"></span>
+                            Customers
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="bar-chart-2"></span>
+                            Reports
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="layers"></span>
+                            Integrations
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main th:fragment="fragmentMain" id="main" class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Dashboard</h1>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <div class="btn-group me-2">
+                        <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+                        <span data-feather="calendar"></span>
+                        This week
+                    </button>
+                </div>
+            </div>
+            <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
+            <h2>Section title</h2>
+            <div class="table-responsive">
+                <table class="table table-striped table-sm">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Header</th>
+                        <th>Header</th>
+                        <th>Header</th>
+                        <th>Header</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>1,001</td>
+                        <td>random</td>
+                        <td>data</td>
+                        <td>placeholder</td>
+                        <td>text</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div th:fragment="fragmentPage" name="pageDiv">
+                    <!--/*@thymesVar id="page" type="org.springframework.data.domain.Page"*/-->
+                    <ul th:if="${page.totalPages le 7}" data-am-widget="pagination" class="pagination" style="text-align: center">
+                        <li th:classappend="${page.hasPrevious()}?'':'disabled' " class="page-item">
+                            <a th:href="@{?page={page}(page=${page.number})}" class="page-link">Previous</a>
+                        </li>
+                        <li th:each="i : ${#numbers.sequence(1, page.totalPages)}"
+                            th:classappend="${(page.number + 1) eq i} ? 'page-item' : ''">
+                            <a th:href="@{?page={page}(page=${i-1})}" th:text="${i}" class="page-link">1</a>
+                        </li>
+                        <li th:classappend="${page.hasNext()}?'':'disabled' " class="page-item ">
+                            <a th:href="@{?page={page}(page=${page.number} + 2)}" class="page-link">Next</a>
+                        </li>
+                    </ul>
+
+                    <ul th:if="${page.totalPages gt 7}" data-am-widget="pagination" class="pagination"
+                        style="text-align: center">
+                        <!-- 上一页 -->
+                        <li th:classappend="*{page.first} ? 'disabled' : ''" th:if="${page.number > 0}"
+                            class="am-pagination-prev ">
+                            <a th:href="@{?page={page}(page=${page.number - 2})}">上一页</a>
+                        </li>
+                        <li class="am-pagination-first" th:classappend="${(page.number + 1) eq 1} ? 'am-active' : ''">
+                            <a th:href="@{?page.page=1}">1</a>
+                        </li>
+                        <!-- 当前页面小于等于4 -->
+                        <li th:if="${(page.number + 1) le 4}" th:each="i : ${#numbers.sequence(2,5)}"
+                            th:classappend="${(page.number + 1) eq i} ? 'am-active' : ''">
+                            <a th:href="@{?page={page}(page=${i})}">
+                                <span th:text="${i}"></span>
+                            </a>
+                        </li>
+                        <li th:if="${(page.number + 1) le 4}">
+                            <a href="javascript:void(0);">
+                                <span aria-hidden="true">...</span>
+                            </a>
+                        </li>
+                        <!-- 最后一页与当前页面之差，小于等于3 -->
+                        <li th:if="${(page.totalPages-(page.number + 1)) le 3}">
+                            <a href="javascript:void(0);">
+                                <span aria-hidden="true">...</span>
+                            </a>
+                        </li>
+                        <li th:if="${(page.totalPages-(page.number + 1)) le 3}"
+                            th:each="i : ${#numbers.sequence(page.totalPages-4, page.totalPages-1)}"
+                            th:classappend="${(page.number + 1) eq i} ? 'am-active' : ''">
+                            <a th:href="@{?page={page}(page=${i})}">
+                                <span th:text="${i}"></span>
+                            </a>
+                        </li>
+                        <!-- 最后一页与当前页面之差大于3，且  当前页面大于4-->
+                        <li th:if="${((page.number + 1) gt 4) && ((page.totalPages-(page.number + 1)) gt 3 )}">
+                            <a href="javascript:void(0);">
+                                <span aria-hidden="true">...</span>
+                            </a>
+                        </li>
+                        <li th:if="${((page.number + 1) gt 4) && ((page.totalPages-(page.number + 1)) gt 3 )}"
+                            th:classappend="${(page.number + 1) eq (page.number + 1)} ? 'am-active' : ''">
+                            <a th:href="@{?page={page}(page=${page.number+1})}" th:text="${page.number+1}">number</a>
+                        </li>
+                        <li th:if="${((page.number + 1) gt 4) && ((page.totalPages-(page.number + 1)) gt 3 )}">
+                            <a th:href="@{?page={page}(page=${page.number+2})}" th:text="${page.number+2}">number</a>
+                        </li>
+                        <li th:if="${((page.number + 1) gt 4) && ((page.totalPages-(page.number + 1)) gt 3 )}">
+                            <a th:href="@{?page={page}(page=${page.number+3})}" th:text="${page.number+3}">number</a>
+                        </li>
+                        <li th:if="${((page.number + 1) gt 4) && ((page.totalPages-(page.number + 1)) gt 3 )}">
+                            <a href="javascript:void(0);">
+                                <span aria-hidden="true">...</span>
+                            </a>
+                        </li>
+                        <!-- 最后一页 -->
+                        <li th:classappend="${(page.number + 1) eq page.totalPages} ? 'am-active' : ''">
+                            <a th:href="@{?page={page}(page=${page.totalPages})}"
+                               th:text="${page.totalPages}">endPage</a>
+                        </li>
+                        <!-- 下一页 -->
+                        <li th:classappend="*{page.last} ? 'disabled' : ''"
+                            th:unless="${page.number + 1 == page.totalPages}">
+                            <a th:href="@{?page={page}(page=${page.number+2})}">
+                                <span aria-hidden="true">下一页</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+            <footer class="footer" th:fragment="fragmentFooter">
+                <p>© <a href="https://kin.kim" target="_blank"> kinkim</a> All rights reserved.</p>
+            </footer>
+        </main>
+
+    </div>
+</div>
+<link th:href="@{css/bootstrap/dashboard.css}" type="text/css" rel="stylesheet"/>
+<script th:src="@{js/bootstrap/feather.min.js}"></script>
+<script th:src="@{js/bootstrap/Chart.min.js}"></script>
+<script th:src="@{js/bootstrap/dashboard.js}"></script>
+</body>
+<script th:inline="javascript">
+    // button.addEventListener("click", ev => {})
+    function loadMain(obj, path) {
+        //const url = ctxPath + "userInfo.html';
+        const url = ctxPath + path;
+        fetch(url, {
+            method: 'GET', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            }
+            // body: JSON.stringify(data) // data can be `string` or {object}!
+        })
+            .then(res => res.text())
+            .then(value => {
+                Array.from(document.getElementsByClassName("nav-link active")).forEach(function (item) {
+                    item.className = 'nav-link ';
+                });
+                obj["className"] = 'nav-link active';
+                document.getElementsByTagName("main")[0].innerHTML = value
+                // document.getElementById("main-context").innerHTML = value
+            })
+            .catch(error => console.error('Error:', error))
+            .then(response => console.log('Success:', response));
+
+    }
+
+
+</script>
+</html>
