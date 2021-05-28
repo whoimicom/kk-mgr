@@ -1,5 +1,4 @@
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity"
-      lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <div class="bd-example">
     <table class="table table-striped table-sm">
         <thead>
@@ -23,7 +22,7 @@
         </tbody>
     </table>
 
-    <div>
+    <div id="page">
         <!--/*@thymesVar id="page" type="org.springframework.data.domain.Page"*/-->
         <ul th:if="${page.totalPages le 7}" data-am-widget="pagination" class="pagination" style="text-align: center">
             <li th:if="${page.number > 0}" class="page-item">
@@ -109,9 +108,6 @@
 </div>
 <link data-th-src="@{css/bootstrap/cheatsheet.css}" type="text/css" rel="stylesheet"/>
 <script data-th-src="@{js/bootstrap/cheatsheet.js}"></script>
-<script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"
-        integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE"
-        crossorigin="anonymous"></script>
 <style>
     .bd-placeholder-img {
         font-size: 1.125rem;
