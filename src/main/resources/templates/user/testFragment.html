@@ -37,8 +37,8 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <!--/*@thymesVar id="page" type="org.springframework.data.domain.Page<kim.kin.model.UserInfo>"*/-->
-                    <tr th:each="userInfo:${page}">
+                    <!--/*@thymesVar id="pageImpl" type="org.springframework.data.domain.Page<kim.kin.model.UserInfo>"*/-->
+                    <tr th:each="userInfo:${pageImpl}">
                         <td th:text="${userInfo.id}"></td>
                         <td th:text="${userInfo.username}"></td>
                         <td th:text="${userInfo.enabled}"></td>

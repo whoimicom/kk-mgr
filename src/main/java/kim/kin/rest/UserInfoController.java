@@ -104,7 +104,13 @@ public class UserInfoController {
     public String testFragment(Model model, Pageable pageable) {
         logger.info("GetMapping /testFragment.html");
         Page<UserInfo> page = userInfoService.findAll(pageable);
-        model.addAttribute("page", page);
+        model.addAttribute("pageImpl", page);
+        logger.info("getTotalElements():{}", page.getTotalElements());
+        logger.info("getTotalPages:{}", page.getTotalPages());
+        logger.info("getNumber:{}", page.getNumber());
+        logger.info("getNumberOfElements:{}", page.getNumberOfElements());
+        logger.info("getSize:{}", page.getSize());
+        logger.info("getPageable:{}", page.getPageable());
         return "user/testFragment.html";
     }
 
