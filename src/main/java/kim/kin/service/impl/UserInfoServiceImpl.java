@@ -36,6 +36,12 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
+    public UserInfo save(UserInfo userInfo) {
+        return userInfoRepository.save(userInfo);
+
+    }
+
+    @Override
     public UserInfo findByUsername(String username) {
         UserInfo userInfo = userInfoRepository.findByUsername(username).orElseThrow(() -> new KkServicesException("用户不存在"));
         return userInfo;

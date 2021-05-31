@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
  */
 public interface UserInfoService {
     UserInfo save(UserInfoDTO dto);
+    UserInfo save(UserInfo dto);
 
     UserInfo findByUsername(String username);
 
