@@ -104,6 +104,14 @@ public class UserInfoController {
     public String testFragment(Model model, Pageable pageable) {
         logger.info("GetMapping /testFragment.html");
         Page<UserInfo> page = userInfoService.findAll(pageable);
+
+/*        for (int i = 21; i <1000; i++) {
+            UserInfo userInfo = new UserInfo();
+            userInfo.setUsername(String.valueOf(i));
+            userInfo.setPassword(String.valueOf(i));
+            userInfo.setEnabled(true);
+            userInfoService.save(userInfo);
+        }*/
         model.addAttribute("pageImpl", page);
         logger.info("getTotalElements():{}", page.getTotalElements());
         logger.info("getTotalPages:{}", page.getTotalPages());
