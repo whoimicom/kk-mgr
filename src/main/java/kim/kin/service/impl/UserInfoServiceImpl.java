@@ -5,6 +5,9 @@ import kim.kin.model.UserInfo;
 import kim.kin.model.UserInfoDTO;
 import kim.kin.repository.UserInfoRepository;
 import kim.kin.service.UserInfoService;
+import org.springframework.boot.web.embedded.netty.NettyWebServer;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -49,6 +52,11 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public Page<UserInfo> findAll(Pageable pageable) {
+        UserInfo probe = new UserInfo();
+        probe.setEnabled(Boolean.TRUE);
+//        probe.setUsername("kinkim");
+        ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreNullValues();
+//        return userInfoRepository.findAll(Example.of(probe, matcher), pageable);
         return userInfoRepository.findAll(pageable);
     }
 }
