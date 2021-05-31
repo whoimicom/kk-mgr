@@ -22,7 +22,7 @@ public class UserInfo implements Serializable {
     @JsonIgnore
     private String password;
     @Column
-    private Boolean enabled = true;
+    private Boolean enabled ;
 
     @Column
     private String avatar;
@@ -115,4 +115,21 @@ public class UserInfo implements Serializable {
     public void setIntroduction(String introduction) {
         this.introduction = introduction;
     }
+
+    @Override
+    public String toString() {
+        return "UserInfo{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", enabled=" + enabled +
+                ", avatar='" + avatar + '\'' +
+                ", introduction='" + introduction + '\'' +
+                ", email='" + email + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", gender='" + gender + '\'' +
+                '}';
+    }
+
+
 }
