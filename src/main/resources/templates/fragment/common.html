@@ -11,8 +11,8 @@
     <link rel="shortcut icon" type="image/png" th:href="@{/img/favicon.ico}"/>
     <!-- Bootstrap core CSS -->
     <link th:href="@{css/bootstrap/bootstrap.min.css}" type="text/css" rel="stylesheet"/>
-    <script th:src="@{js/bootstrap/bootstrap.bundle.min.js}"></script>
-    <script th:src="@{js/bootstrap/cheatsheet.js}"></script>
+<!--    <script th:src="@{js/bootstrap/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{js/bootstrap/cheatsheet.js}"></script>-->
     <script th:inline="javascript">
         const ctxPath = /*[[@{/}]]*/'';
     </script>
@@ -80,7 +80,7 @@
         </nav>
 
         <main th:fragment="fragmentMain" id="main" class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <!--          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 class="h2">Dashboard</h1>
                 <div class="btn-toolbar mb-2 mb-md-0">
                     <div class="btn-group me-2">
@@ -93,7 +93,7 @@
                     </button>
                 </div>
             </div>
-            <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
+            <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>-->
             <h2>Section title</h2>
             <div class="table-responsive">
                 <table class="table table-striped table-sm">
@@ -118,7 +118,6 @@
                 </table>
                 <div th:fragment="fragmentPage" th:with="previous=${pageImpl.getNumber()}-1" name="pageDiv">
                     <!--/*@thymesVar id="pageImpl" type="org.springframework.data.domain.Page"*/-->
-                    <p>previous<span th:text="(previous)"></span></p>
                     <p>previous<span th:text="${previous}"></span></p>
                     <ul class="pagination" data-am-widget="pagination" style="text-align: center"
                         th:if="${pageImpl.totalPages le 7}">
