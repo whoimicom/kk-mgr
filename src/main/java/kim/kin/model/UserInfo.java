@@ -22,7 +22,7 @@ public class UserInfo implements Serializable {
     @JsonIgnore
     private String password;
     @Column
-    private Boolean enabled ;
+    private Boolean enabled=Boolean.TRUE;
 
     @Column
     private String avatar;
@@ -34,15 +34,15 @@ public class UserInfo implements Serializable {
     private String mobile;
 
     private String gender;
-//    private String remoteAddress;
-//
-//    public String getRemoteAddress() {
-//        return remoteAddress;
-//    }
-//
-//    public void setRemoteAddress(String remoteAddress) {
-//        this.remoteAddress = remoteAddress;
-//    }
+/*    private String remoteAddress;
+
+    public String getRemoteAddress() {
+        return remoteAddress;
+    }
+
+    public void setRemoteAddress(String remoteAddress) {
+        this.remoteAddress = remoteAddress;
+    }*/
 
     public String getGender() {
         return gender;
@@ -122,7 +122,6 @@ public class UserInfo implements Serializable {
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", enabled=" + enabled +
                 ", avatar='" + avatar + '\'' +
                 ", introduction='" + introduction + '\'' +
                 ", email='" + email + '\'' +
