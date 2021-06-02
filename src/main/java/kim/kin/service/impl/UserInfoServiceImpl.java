@@ -32,6 +32,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public UserInfo save(UserInfoDTO dto) {
         UserInfo userInfo = new UserInfo();
+
         userInfo.setUsername(dto.getUsername());
         userInfo.setPassword(bcryptEncoder.encode(dto.getPassword()));
         return userInfoRepository.save(userInfo);
@@ -52,11 +53,11 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public Page<UserInfo> findAll(Pageable pageable) {
-        UserInfo probe = new UserInfo();
-        probe.setEnabled(Boolean.TRUE);
-//        probe.setUsername("kinkim");
+        UserInfo userInfo = new UserInfo();
+        userInfo.setEnabled(Boolean.TRUE);
+        userInfo.setUsername("kinkim");
         ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreNullValues();
-//        return userInfoRepository.findAll(Example.of(probe, matcher), pageable);
+//        return userInfoRepository.findAll(Example.of(userInfo, matcher), pageable);
         return userInfoRepository.findAll(pageable);
     }
 }
