@@ -14,6 +14,8 @@
     <script th:src="@{js/bootstrap/bootstrap.bundle.min.js}"></script>
     <script th:src="@{js/bootstrap/cheatsheet.js}"></script>
     <link th:href="@{css/bootstrap/dashboard.css}" type="text/css" rel="stylesheet"/>
+    <script th:src="@{js/bootstrap/feather.min.js}"></script>
+<!--    <link th:href="@{css/bootstrap/dashboard.css}" type="text/css" rel="stylesheet"/>-->
     <script th:inline="javascript">
         const ctxPath = /*[[@{/}]]*/'';
     </script>
@@ -56,6 +58,7 @@
     </div>
 </div>
 </body>
+
 <script th:inline="javascript">
     // button.addEventListener("click", ev => {})
     function loadMain(obj, path) {
@@ -81,7 +84,9 @@
             .then(response => console.log('Success:', response));
 
     }
-
+    window.addEventListener('load', (event) => {
+        feather.replace()
+    });
 
 </script>
 </html>
