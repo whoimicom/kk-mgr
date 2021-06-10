@@ -65,24 +65,27 @@ CREATE TABLE `groups`  (
 -- Table structure for kk_user_info
 -- ----------------------------
 DROP TABLE IF EXISTS `kk_user_info`;
-CREATE TABLE `kk_user_info`  (
-  `id` bigint(0) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `kk_user_info` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `password` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `enabled` tinyint(1) NOT NULL,
   `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `introduction` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `mobile` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `gender` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `mobile` varchar(15) DEFAULT NULL,
+  `gender` varchar(10) DEFAULT NULL,
+  `created_by` varchar(55) DEFAULT NULL,
+  `created_datetime` datetime DEFAULT NULL,
+  `last_modified_by` varchar(55) DEFAULT NULL,
+  `last_modified_datetime` datetime DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
-
+) ENGINE=InnoDB AUTO_INCREMENT=633 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 -- ----------------------------
 -- Records of kk_user_info
 -- ----------------------------
-INSERT INTO `kk_user_info` VALUES (1, 'kinkim', '$2a$10$fm3xLyxsOXYcCobbb5FKp.3mdY3PWgIWYKy8jZWTL.z2SpU6RtDMK', 1, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `kk_user_info` VALUES (2, 'admin', '$2a$10$RBu1rjIPbuVh8VeAMcOuvO8FmxW6KympyTsz2U0zCz95M773nLVbi', 1, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `kinkim`.`kk_user_info`(`id`, `username`, `password`, `enabled`, `avatar`, `introduction`, `email`, `mobile`, `gender`, `created_by`, `created_date_time`, `last_modified_by`, `last_modified_datetime`) VALUES (1, 'kinkim', '$2a$10$fm3xLyxsOXYcCobbb5FKp.3mdY3PWgIWYKy8jZWTL.z2SpU6RtDMK', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `kinkim`.`kk_user_info`(`id`, `username`, `password`, `enabled`, `avatar`, `introduction`, `email`, `mobile`, `gender`, `created_by`, `created_date_time`, `last_modified_by`, `last_modified_datetime`) VALUES (2, 'admin', '$2a$10$RBu1rjIPbuVh8VeAMcOuvO8FmxW6KympyTsz2U0zCz95M773nLVbi', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for persistent_logins
