@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity"
+      lang="en">
+<div th:fragment="fragmentPage" th:with="previous=${pageImpl.getNumber()}-1" name="pageDiv">
+    <!--/*@thymesVar id="pageImpl" type="org.springframework.data.domain.Page"*/-->
+    <!-- less than 7-->
+    <ul class="pagination" data-am-widget="pagination" style="text-align: center"
+        th:if="${pageImpl.totalPages le 7}">
+        <li class="page-item" th:classappend="${pageImpl.hasPrevious()}?'':'disabled' ">
+            <a class="page-link" th:href="@{?page={page}(page=${pageImpl.number - 1})}">Previous</a>
+        </li>
+        <li th:each="i : ${#numbers.sequence(1, pageImpl.totalPages)}" class="page-item"
+            th:classappend="${(pageImpl.number + 1) eq i} ? ' active' : ''">
+            <a th:href="@{?page={page}(page=${i-1})}" th:text="${i}" class="page-link">1</a>
+        </li>
+        <li th:classappend="${pageImpl.hasNext()}?'':'disabled' " class="page-item ">
+            <a th:href="@{?page={page}(page=${pageImpl.number} + 1)}" class="page-link">Next</a>
+        </li>
+    </ul>
+    <!-- great than 7 -->
+    <ul class="pagination" style="text-align: center" th:if="${pageImpl.totalPages gt 7}">
+        <li class="page-item" th:classappend="${pageImpl.hasPrevious()}?'':'disabled' ">
+            <a class="page-link" th:href="@{?page={page}(page=${pageImpl.number - 1})}">Previous</a>
+        </li>
+        <!-- first page -->
+        <li class="page-item" th:classappend="${(pageImpl.number + 1) eq 1} ? 'active' : ''">
+            <a class="page-link" th:href="@{?page=0}">1</a>
+        </li>
+        <li class="page-item" th:if="${(pageImpl.number ) gt 3}">
+            <a class="page-link" href="javascript:void(0);">
+                <span aria-hidden="true">...</span>
+            </a>
+        </li>
+        <!--  each 1 5 -->
+        <li th:if="${pageImpl.number le 3}" th:each="i : ${#numbers.sequence(1, 5)}" class="page-item"
+            th:classappend="${pageImpl.number  eq i} ? ' active' : ''">
+            <a th:href="@{?page={page}(page=${i})}" th:text="${i+1}" class="page-link">1</a>
+        </li>
+        <!--  each middle -->
+        <li th:if="${(pageImpl.number gt 3)&&((pageImpl.totalPages-pageImpl.number) gt 4)}"
+            th:each="i : ${#numbers.sequence(pageImpl.number-1, pageImpl.number+1)}" class="page-item"
+            th:classappend="${pageImpl.number eq i} ? ' active' : ''">
+            <a th:href="@{?page={page}(page=${i})}" th:text="${i+1}" class="page-link">1</a>
+        </li>
+        <!--  each last  -->
+        <li th:if="${(pageImpl.totalPages-pageImpl.number) le 4}"
+            th:each="i : ${#numbers.sequence(pageImpl.number-1, pageImpl.totalPages-2)}"
+            class="page-item"
+            th:classappend="${pageImpl.number  eq i} ? ' active' : ''">
+            <a th:href="@{?page={page}(page=${i})}" th:text="${i+1}" class="page-link">1</a>
+        </li>
+
+        <li class="page-item" th:if="${(pageImpl.totalPages - pageImpl.number ) gt 4}">
+            <a class="page-link" href="javascript:void(0);">
+                <span aria-hidden="true">...</span>
+            </a>
+        </li>
+        <!--  Last Page -->
+        <li class="page-item"
+            th:classappend="${(pageImpl.number + 1) eq pageImpl.totalPages} ? 'active' : ''">
+            <a class="page-link" th:href="@{?page={page}(page=${pageImpl.totalPages-1})}"
+               th:text="${pageImpl.totalPages}">endPage</a>
+        </li>
+        <!--  Next -->
+        <li th:classappend="${pageImpl.hasNext()}?'':'disabled' " class="page-item ">
+            <a th:href="@{?page={page}(page=${pageImpl.number} + 1)}" class="page-link">Next</a>
+        </li>
+
+    </ul>
+</div>
+</html>
