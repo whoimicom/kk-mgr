@@ -1,11 +1,12 @@
 package kim.kin.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.*;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 
 /**
@@ -22,7 +23,7 @@ public class UserInfo implements Serializable {
     @JsonIgnore
     private String password;
     @Column
-    private Boolean enabled=Boolean.TRUE;
+    private Boolean enabled = Boolean.TRUE;
 
     @Column
     private String avatar;
@@ -34,6 +35,19 @@ public class UserInfo implements Serializable {
     private String mobile;
 
     private String gender;
+
+    @CreatedBy
+    private String createdBy;
+    @CreatedDate
+    private LocalDateTime createdDatetime;
+
+    @LastModifiedBy
+    private String lastModifiedBy;
+    @LastModifiedDate
+    private LocalDateTime lastModifiedDatetime;
+
+
+
 /*    private String remoteAddress;
 
     public String getRemoteAddress() {
@@ -114,6 +128,38 @@ public class UserInfo implements Serializable {
 
     public void setIntroduction(String introduction) {
         this.introduction = introduction;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public LocalDateTime getCreatedDatetime() {
+        return createdDatetime;
+    }
+
+    public void setCreatedDatetime(LocalDateTime createdDatetime) {
+        this.createdDatetime = createdDatetime;
+    }
+
+    public String getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public LocalDateTime getLastModifiedDatetime() {
+        return lastModifiedDatetime;
+    }
+
+    public void setLastModifiedDatetime(LocalDateTime lastModifiedDatetime) {
+        this.lastModifiedDatetime = lastModifiedDatetime;
     }
 
     @Override
