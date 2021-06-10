@@ -6,6 +6,7 @@ import kim.kin.utils.KkUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.DefaultRedirectStrategy;
@@ -30,7 +31,7 @@ public class AccessDeniedHandlerImpl implements AccessDeniedHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
         logger.info("");
         if (KkUtils.isAjaxRequest(request)) {
-            response.setContentType(KkConstant.CONTENT_TYPE_JSON_UTF8);
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             response.getWriter().write(this.mapper.writeValueAsString(new ResponseEntity<Object>("AccessDenied", HttpStatus.UNAUTHORIZED)));
         } else {
             redirectStrategy.sendRedirect(request, response, "/access/403");

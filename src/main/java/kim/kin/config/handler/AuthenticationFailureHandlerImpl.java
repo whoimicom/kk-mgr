@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kim.kin.utils.KkConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.AuthenticationException;
@@ -39,7 +40,8 @@ public class AuthenticationFailureHandlerImpl implements AuthenticationFailureHa
         } else if (exception instanceof CredentialsExpiredException) {
             authMsg = "用户密码已过期！";
         }
-        response.setContentType(KkConstant.CONTENT_TYPE_JSON_UTF8);
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setCharacterEncoding("UTF-8");
         response.getWriter().write(mapper.writeValueAsString(ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(authMsg)));
     }
 }
