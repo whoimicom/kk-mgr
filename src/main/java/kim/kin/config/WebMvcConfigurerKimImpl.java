@@ -40,7 +40,7 @@ import java.util.Date;
  */
 @Configuration
 @EnableWebMvc
-public class ConfigurerAdapter implements WebMvcConfigurer {
+public class WebMvcConfigurerKimImpl implements WebMvcConfigurer {
 
     @Value("${kim.kin.file-path}")
     private String filePath;

@@ -19,6 +19,9 @@ import java.util.stream.Collectors;
 import static com.ulisesbocchio.jasyptspringboot.util.AsymmetricCryptography.KeyFormat.PEM;
 
 
+/**
+ * @author choky
+ */
 @Configuration
 @EnableEncryptableProperties
 public class ConfigurerJasypt {

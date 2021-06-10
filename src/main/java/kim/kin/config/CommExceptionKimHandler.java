@@ -24,8 +24,8 @@ import static org.springframework.http.ResponseEntity.badRequest;
  * @author choky
  */
 @RestControllerAdvice
-public class CommExceptionHandler {
-    private final Logger logger = LoggerFactory.getLogger(CommExceptionHandler.class);
+public class CommExceptionKimHandler {
+    private final Logger logger = LoggerFactory.getLogger(CommExceptionKimHandler.class);
 
     @ExceptionHandler(Exception.class)
     @ResponseBody

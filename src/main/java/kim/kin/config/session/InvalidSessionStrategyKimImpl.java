@@ -15,8 +15,8 @@ import java.io.IOException;
  * @author choky
  */
 @Component
-public class InvalidSessionStrategyImpl implements InvalidSessionStrategy {
-    private static final Logger logger = LoggerFactory.getLogger(InvalidSessionStrategyImpl.class);
+public class InvalidSessionStrategyKimImpl implements InvalidSessionStrategy {
+    private static final Logger logger = LoggerFactory.getLogger(InvalidSessionStrategyKimImpl.class);
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     @Override

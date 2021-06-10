@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.User;
 
 import java.util.Optional;
 
-class SpringSecurityAuditorAware implements AuditorAware<User> {
+class AuditorAwareKimImpl implements AuditorAware<User> {
 
     @Override
     public Optional<User> getCurrentAuditor() {

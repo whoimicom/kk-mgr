@@ -2,11 +2,8 @@ package kim.kin.config.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kim.kin.model.KkUserDetails;
-import kim.kin.model.UserInfo;
-import kim.kin.utils.KkConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.web.DefaultRedirectStrategy;
@@ -23,16 +20,16 @@ import java.io.IOException;
  * @author choky
  */
 @Component
-public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHandler {
-    private final Logger logger= LoggerFactory.getLogger(AuthenticationSuccessHandlerImpl.class);
+public class AuthenticationSuccessKimImpl implements AuthenticationSuccessHandler {
+    private final Logger logger= LoggerFactory.getLogger(AuthenticationSuccessKimImpl.class);
     private ObjectMapper mapper = new ObjectMapper();
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
     private SessionRegistry sessionRegistry;
 
-    public AuthenticationSuccessHandlerImpl() {
+    public AuthenticationSuccessKimImpl() {
         super();
     }
-    public AuthenticationSuccessHandlerImpl(SessionRegistry sessionRegistry) {
+    public AuthenticationSuccessKimImpl(SessionRegistry sessionRegistry) {
         this.sessionRegistry = sessionRegistry;
     }
     @Override

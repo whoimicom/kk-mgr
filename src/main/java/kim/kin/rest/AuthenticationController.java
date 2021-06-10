@@ -1,7 +1,7 @@
 package kim.kin.rest;
 
 
-import kim.kin.config.security.UserDetailsServiceImpl;
+import kim.kin.config.security.UserDetailsServiceKimImpl;
 import kim.kin.kklog.KkLog;
 import kim.kin.model.MetaVO;
 import kim.kin.model.UserInfoDTO;
@@ -13,8 +13,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
-import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
-import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,12 +27,12 @@ import java.util.*;
 @CrossOrigin
 public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
-    private final UserDetailsServiceImpl userDetailsService;
+    private final UserDetailsServiceKimImpl userDetailsService;
     private final UserInfoService userInfoService;
     private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
 
-    public AuthenticationController(AuthenticationManager authenticationManager, UserDetailsServiceImpl userDetailsService, UserInfoService userInfoService) {
+    public AuthenticationController(AuthenticationManager authenticationManager, UserDetailsServiceKimImpl userDetailsService, UserInfoService userInfoService) {
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
         this.userInfoService = userInfoService;

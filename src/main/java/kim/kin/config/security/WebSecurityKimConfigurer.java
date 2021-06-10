@@ -1,12 +1,11 @@
 package kim.kin.config.security;
 
-import kim.kin.config.handler.AccessDeniedHandlerImpl;
-import kim.kin.config.handler.AuthenticationFailureHandlerImpl;
-import kim.kin.config.handler.AuthenticationSuccessHandlerImpl;
-import kim.kin.config.handler.LogoutHandlerImpl;
-import kim.kin.config.session.InvalidSessionStrategyImpl;
-import kim.kin.config.session.SessionInformationExpiredStrategyImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import kim.kin.config.handler.AccessDeniedKimImpl;
+import kim.kin.config.handler.AuthenticationFailureKimImpl;
+import kim.kin.config.handler.AuthenticationSuccessKimImpl;
+import kim.kin.config.handler.LogoutHandlerKimImpl;
+import kim.kin.config.session.InvalidSessionStrategyKimImpl;
+import kim.kin.config.session.SessionInformationExpiredKimImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,21 +31,21 @@ import javax.sql.DataSource;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityKimConfigurer extends WebSecurityConfigurerAdapter {
 
-    private final AuthenticationFailureHandlerImpl authenticationFailureHandlerImpl;
-    private final UserDetailsServiceImpl userDetailsServiceImpl;
-    private final InvalidSessionStrategyImpl invalidSessionStrategyImpl;
-    private final SessionInformationExpiredStrategyImpl sessionInformationExpiredStrategyImpl;
-    private final AccessDeniedHandlerImpl accessDeniedHandlerImpl;
+    private final AuthenticationFailureKimImpl authenticationFailureKimImpl;
+    private final UserDetailsServiceKimImpl userDetailsServiceKimImpl;
+    private final InvalidSessionStrategyKimImpl invalidSessionStrategyKimImpl;
+    private final SessionInformationExpiredKimImpl sessionInformationExpiredKimImpl;
+    private final AccessDeniedKimImpl accessDeniedKimImpl;
     private final DataSource dataSource;
 
-    public WebSecurityConfig(AuthenticationFailureHandlerImpl authenticationFailureHandlerImpl, UserDetailsServiceImpl userDetailsServiceImpl, InvalidSessionStrategyImpl invalidSessionStrategyImpl, SessionInformationExpiredStrategyImpl sessionInformationExpiredStrategyImpl, AccessDeniedHandlerImpl accessDeniedHandlerImpl, DataSource dataSource) {
-        this.authenticationFailureHandlerImpl = authenticationFailureHandlerImpl;
-        this.userDetailsServiceImpl = userDetailsServiceImpl;
-        this.invalidSessionStrategyImpl = invalidSessionStrategyImpl;
-        this.sessionInformationExpiredStrategyImpl = sessionInformationExpiredStrategyImpl;
-        this.accessDeniedHandlerImpl = accessDeniedHandlerImpl;
+    public WebSecurityKimConfigurer(AuthenticationFailureKimImpl authenticationFailureKimImpl, UserDetailsServiceKimImpl userDetailsServiceKimImpl, InvalidSessionStrategyKimImpl invalidSessionStrategyKimImpl, SessionInformationExpiredKimImpl sessionInformationExpiredKimImpl, AccessDeniedKimImpl accessDeniedKimImpl, DataSource dataSource) {
+        this.authenticationFailureKimImpl = authenticationFailureKimImpl;
+        this.userDetailsServiceKimImpl = userDetailsServiceKimImpl;
+        this.invalidSessionStrategyKimImpl = invalidSessionStrategyKimImpl;
+        this.sessionInformationExpiredKimImpl = sessionInformationExpiredKimImpl;
+        this.accessDeniedKimImpl = accessDeniedKimImpl;
         this.dataSource = dataSource;
     }
 
@@ -69,25 +68,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         String[] anonResourcesUrl = {"/css/**", "/js/**", "/fonts/**", "/img/**", "*.svg", "*.png", "*.js", "*.css", "*.ico"};
-        httpSecurity.exceptionHandling().accessDeniedHandler(accessDeniedHandlerImpl);
+        httpSecurity.exceptionHandling().accessDeniedHandler(accessDeniedKimImpl);
         // formLogin
         httpSecurity.formLogin()
                 .loginPage("/login.html")
                 .loginProcessingUrl("/signin")
                 .successHandler(authenticationSucessHandler())
-                .failureHandler(authenticationFailureHandlerImpl);
+                .failureHandler(authenticationFailureKimImpl);
         // rememberMe
         httpSecurity
                 .rememberMe()
                 .tokenRepository(persistentTokenRepository())
                 .tokenValiditySeconds(3600)
-                .userDetailsService(userDetailsServiceImpl);
+                .userDetailsService(userDetailsServiceKimImpl);
         // sessionManagement
         httpSecurity.sessionManagement()
 //                .invalidSessionStrategy(invalidSessionStrategy())
                 .invalidSessionUrl("/login.html")
                 .maximumSessions(1)
-                .expiredSessionStrategy(sessionInformationExpiredStrategyImpl)
+                .expiredSessionStrategy(sessionInformationExpiredKimImpl)
                 .sessionRegistry(sessionRegistry());
         //logout
         httpSecurity.logout()
@@ -116,8 +115,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new SessionRegistryImpl();
     }
 
-    public AuthenticationSuccessHandlerImpl authenticationSucessHandler() {
-        return new AuthenticationSuccessHandlerImpl(sessionRegistry());
+    public AuthenticationSuccessKimImpl authenticationSucessHandler() {
+        return new AuthenticationSuccessKimImpl(sessionRegistry());
     }
 
     @Bean
@@ -130,8 +129,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public LogoutHandler logoutHandler() {
-        LogoutHandlerImpl logoutHandlerImpl = new LogoutHandlerImpl();
-        logoutHandlerImpl.setSessionRegistry(sessionRegistry());
-        return logoutHandlerImpl;
+        LogoutHandlerKimImpl logoutHandlerKimImpl = new LogoutHandlerKimImpl();
+        logoutHandlerKimImpl.setSessionRegistry(sessionRegistry());
+        return logoutHandlerKimImpl;
     }
 }

@@ -18,8 +18,8 @@ import java.time.format.DateTimeFormatter;
  * @author choky
  */
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService {
-    private static final Logger logger = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
+public class UserDetailsServiceKimImpl implements UserDetailsService {
+    private static final Logger logger = LoggerFactory.getLogger(UserDetailsServiceKimImpl.class);
 
     @Autowired
     private UserInfoRepository userInfoRepository;

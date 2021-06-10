@@ -1,7 +1,6 @@
 package kim.kin.config.session;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import kim.kin.utils.KkConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -17,8 +16,8 @@ import java.io.IOException;
  * @author choky
  */
 @Component
-public class SessionInformationExpiredStrategyImpl implements SessionInformationExpiredStrategy {
-private static final Logger logger = LoggerFactory.getLogger(SessionInformationExpiredStrategyImpl.class);
+public class SessionInformationExpiredKimImpl implements SessionInformationExpiredStrategy {
+private static final Logger logger = LoggerFactory.getLogger(SessionInformationExpiredKimImpl.class);
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Override

@@ -20,7 +20,7 @@ import java.io.IOException;
  * @author choky
  */
 @Component
-public class AuthenticationFailureHandlerImpl implements AuthenticationFailureHandler {
+public class AuthenticationFailureKimImpl implements AuthenticationFailureHandler {
 
     private final ObjectMapper mapper = new ObjectMapper();
 

@@ -1,7 +1,6 @@
 package kim.kin.config.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import kim.kin.utils.KkConstant;
 import kim.kin.utils.KkUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,8 +21,8 @@ import java.io.IOException;
  * @author choky
  */
 @Component
-public class AccessDeniedHandlerImpl implements AccessDeniedHandler {
-    private static final Logger logger = LoggerFactory.getLogger(AccessDeniedHandlerImpl.class);
+public class AccessDeniedKimImpl implements AccessDeniedHandler {
+    private static final Logger logger = LoggerFactory.getLogger(AccessDeniedKimImpl.class);
     private ObjectMapper mapper = new ObjectMapper();
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
