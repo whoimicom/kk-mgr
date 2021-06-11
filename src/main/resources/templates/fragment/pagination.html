@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity"
       lang="en">
-<div th:fragment="fragmentPage" th:with="previous=${pageImpl.getNumber()}-1" name="pageDiv">
+<div th:fragment="fragmentPagination" th:with="previous=${pageImpl.getNumber()}-1" name="pageDiv">
     <!--/*@thymesVar id="pageImpl" type="org.springframework.data.domain.Page"*/-->
     <!-- less than 7-->
     <ul class="pagination" data-am-widget="pagination" style="text-align: center"
