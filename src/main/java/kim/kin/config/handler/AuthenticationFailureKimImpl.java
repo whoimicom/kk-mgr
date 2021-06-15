@@ -28,6 +28,7 @@ public class AuthenticationFailureKimImpl implements AuthenticationFailureHandle
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException {
         logger.info("onAuthenticationFailure:{}", exception.getMessage());
         String authMsg = exception.getMessage();
+
         if (exception instanceof UsernameNotFoundException) {
             authMsg = "用户不存在！";
         } else if (exception instanceof BadCredentialsException) {

@@ -6,9 +6,13 @@ import kim.kin.config.handler.AuthenticationSuccessKimImpl;
 import kim.kin.config.handler.LogoutHandlerKimImpl;
 import kim.kin.config.session.InvalidSessionStrategyKimImpl;
 import kim.kin.config.session.SessionInformationExpiredKimImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -132,5 +136,28 @@ public class WebSecurityKimConfigurer extends WebSecurityConfigurerAdapter {
         LogoutHandlerKimImpl logoutHandlerKimImpl = new LogoutHandlerKimImpl();
         logoutHandlerKimImpl.setSessionRegistry(sessionRegistry());
         return logoutHandlerKimImpl;
+    }
+
+    /**
+     * setHideUserNotFoundExceptions false
+     *
+     * @return AuthenticationProvider
+     */
+    @Bean
+    public AuthenticationProvider daoAuthenticationProvider() {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setUserDetailsService(userDetailsServiceKimImpl);
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+        daoAuthenticationProvider.setHideUserNotFoundExceptions(false);
+        return daoAuthenticationProvider;
+    }
+
+    /**
+     * @param authenticationManagerBuilder
+     * @throws Exception
+     */
+    @Autowired
+    public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+        authenticationManagerBuilder.authenticationProvider(daoAuthenticationProvider());
     }
 }
