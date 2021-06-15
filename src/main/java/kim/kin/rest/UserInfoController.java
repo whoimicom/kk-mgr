@@ -1,13 +1,12 @@
 package kim.kin.rest;
 
-import kim.kin.kklog.KkLog;
+import kim.kin.kklog.LogKimAnnotation;
 import kim.kin.model.UserInfo;
 import kim.kin.service.UserInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.DefaultRedirectStrategy;
@@ -18,8 +17,6 @@ import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -53,7 +50,7 @@ public class UserInfoController {
 
 
     @GetMapping("/login.html")
-    @KkLog
+    @LogKimAnnotation
     public String login(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         SavedRequest savedRequest = requestCache.getRequest(request, response);
         if (savedRequest != null) {
@@ -69,7 +66,7 @@ public class UserInfoController {
     }
 
     @GetMapping("/")
-    @KkLog
+    @LogKimAnnotation
     public void success(HttpServletRequest request, HttpServletResponse response, Authentication authentication, Model model) throws IOException {
         Optional<Object> principalOpt = Optional.ofNullable(authentication.getPrincipal());
         if (principalOpt.isPresent()) {
@@ -83,7 +80,7 @@ public class UserInfoController {
     }
 
     @GetMapping("/index.html")
-    @KkLog
+    @LogKimAnnotation
     public String index(Authentication authentication, Model model) {
         logger.info("GetMapping /index.html");
         model.addAttribute("user", authentication.getPrincipal());
@@ -91,7 +88,7 @@ public class UserInfoController {
     }
 
     @GetMapping("/userInfo.html")
-    @KkLog
+    @LogKimAnnotation
     public String userInfo(Model model, Pageable pageable) {
         logger.info("GetMapping /userInfo.html");
         Page<UserInfo> page = userInfoService.findAll(pageable);
@@ -100,7 +97,7 @@ public class UserInfoController {
     }
 
     @GetMapping("/testFragment.html")
-    @KkLog
+    @LogKimAnnotation
     public String testFragment(Model model, Pageable pageable) {
         logger.info("GetMapping /testFragment.html");
         Page<UserInfo> page = userInfoService.findAll(pageable);

@@ -7,7 +7,7 @@ import java.util.Collection;
 /**
  * @author choky
  */
-public class KkUserDetails extends User {
+public class UserKimDetails extends User {
 
     private static final long serialVersionUID = 2017845963758421135L;
 
@@ -31,11 +31,11 @@ public class KkUserDetails extends User {
 
     private String loginTime;
 
-    public KkUserDetails(String username, String password, Collection<? extends GrantedAuthority> authorities) {
+    public UserKimDetails(String username, String password, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
     }
 
-    public KkUserDetails(String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
+    public UserKimDetails(String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
     }
 

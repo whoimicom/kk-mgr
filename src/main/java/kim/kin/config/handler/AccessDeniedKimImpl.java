@@ -1,7 +1,7 @@
 package kim.kin.config.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import kim.kin.utils.KkUtils;
+import kim.kin.utils.KimUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -29,7 +29,7 @@ public class AccessDeniedKimImpl implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
         logger.info("");
-        if (KkUtils.isAjaxRequest(request)) {
+        if (KimUtils.isAjaxRequest(request)) {
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             response.getWriter().write(this.mapper.writeValueAsString(new ResponseEntity<Object>("AccessDenied", HttpStatus.UNAUTHORIZED)));
         } else {

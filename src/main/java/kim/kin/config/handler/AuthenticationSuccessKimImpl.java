@@ -1,7 +1,7 @@
 package kim.kin.config.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import kim.kin.model.KkUserDetails;
+import kim.kin.model.UserKimDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -40,8 +40,9 @@ public class AuthenticationSuccessKimImpl implements AuthenticationSuccessHandle
         String remoteAddress = details.getRemoteAddress();
 
         Object principal = authentication.getPrincipal();
-        KkUserDetails userDetails = (KkUserDetails) principal;
+        UserKimDetails userDetails = (UserKimDetails) principal;
         userDetails.setRemoteAddress(remoteAddress);
+        request.getSession().setAttribute("userDetails",userDetails);
 
 //        if (!LoginType.normal.equals(loginType)) {
 //            String sessionId = details.getSessionId();

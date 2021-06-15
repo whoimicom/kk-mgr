@@ -1,6 +1,6 @@
 package kim.kin.config.security;
 
-import kim.kin.model.KkUserDetails;
+import kim.kin.model.UserKimDetails;
 import kim.kin.model.UserInfo;
 import kim.kin.repository.UserInfoRepository;
 import org.slf4j.Logger;
@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -27,15 +28,11 @@ public class UserDetailsServiceKimImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        logger.info(""+username);
-        UserInfo userInfo = null;
-        try {
-            userInfo = userInfoRepository.findByUsername(username).orElseThrow(Exception::new);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        logger.info("Override loadUserByUsername:[{}]", username);
+        UserInfo userInfo = userInfoRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(username));
         String permissions = "/test,/auth,/index.html";
-        KkUserDetails userDetails = new KkUserDetails(
+        UserKimDetails userDetails = new UserKimDetails(
                 userInfo.getUsername(), userInfo.getPassword(), true, true, true, true,
                 AuthorityUtils.commaSeparatedStringToAuthorityList(permissions));
         userDetails.setTheme("");

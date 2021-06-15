@@ -1,8 +1,8 @@
 package kim.kin.config.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import kim.kin.utils.KkConstant;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,11 +21,12 @@ import java.io.IOException;
  */
 @Component
 public class AuthenticationFailureKimImpl implements AuthenticationFailureHandler {
-
+    private static final Logger logger = LoggerFactory.getLogger(AuthenticationFailureKimImpl.class);
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException {
+        logger.info("onAuthenticationFailure:{}", exception.getMessage());
         String authMsg = exception.getMessage();
         if (exception instanceof UsernameNotFoundException) {
             authMsg = "用户不存在！";

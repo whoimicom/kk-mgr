@@ -27,15 +27,15 @@ import java.util.stream.Collectors;
  */
 @Component
 @Aspect
-public class LogAspect {
+public class LogKimAspect {
     private static final String UNKNOWN = "unknown";
     ThreadLocal<Long> currentTime = new ThreadLocal<>();
-    private final Logger logger = LoggerFactory.getLogger(LogAspect.class);
+    private final Logger logger = LoggerFactory.getLogger(LogKimAspect.class);
 
     /**
      * 配置切入点
      */
-    @Pointcut("@annotation(kim.kin.kklog.KkLog)")
+    @Pointcut("@annotation(kim.kin.kklog.LogKimAnnotation)")
     public void logPointcut() {
     }
 
@@ -51,12 +51,12 @@ public class LogAspect {
         HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
         List<Object> collect = Arrays.stream(joinPoint.getArgs()).collect(Collectors.toList());
         Enumeration<String> headerNames = request.getHeaderNames();
-/*        logger.error("header:------------------------------------------------");
+        logger.debug("header:------------------------------------------------");
         headerNames.asIterator().forEachRemaining(s -> {
             String header = request.getHeader(s);
-            logger.info(s + " :" + header);
+            logger.debug(s + " :" + header);
         });
-        logger.error("header:------------------------------------------------");*/
+        logger.debug("header:------------------------------------------------");
         logger.info("ip:" + acquireIp(request) + " args:" + collect + " joinPoint:" + joinPoint);
         return result;
     }

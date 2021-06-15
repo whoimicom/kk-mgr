@@ -2,7 +2,7 @@ package kim.kin.rest;
 
 
 import kim.kin.config.security.UserDetailsServiceKimImpl;
-import kim.kin.kklog.KkLog;
+import kim.kin.kklog.LogKimAnnotation;
 import kim.kin.model.MetaVO;
 import kim.kin.model.UserInfoDTO;
 import kim.kin.model.UserPermissionVO;
@@ -39,7 +39,7 @@ public class AuthenticationController {
     }
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-    @KkLog
+    @LogKimAnnotation
     public void createAuthenticationToken(HttpServletRequest request, HttpServletResponse response,@RequestBody UserInfoDTO userInfoDTO) throws IOException {
         String username = userInfoDTO.getUsername();
         String password = userInfoDTO.getPassword();
@@ -50,7 +50,7 @@ public class AuthenticationController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    @KkLog
+    @LogKimAnnotation
     public ResponseEntity<?> saveUser(@RequestBody UserInfoDTO user) {
         return ResponseEntity.ok(userInfoService.save(user));
     }
@@ -62,7 +62,7 @@ public class AuthenticationController {
 //    }
 
     @PostMapping(value = "/getInfo")
-    @KkLog
+    @LogKimAnnotation
     public ResponseEntity<?> getInfo() {
         UserInfoDTO us = new UserInfoDTO();
         us.setAvatar("https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
