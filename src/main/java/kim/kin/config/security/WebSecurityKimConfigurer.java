@@ -7,6 +7,7 @@ import kim.kin.config.handler.LogoutHandlerKimImpl;
 import kim.kin.config.session.InvalidSessionStrategyKimImpl;
 import kim.kin.config.session.SessionInformationExpiredKimImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -44,7 +45,7 @@ public class WebSecurityKimConfigurer extends WebSecurityConfigurerAdapter {
     private final AccessDeniedKimImpl accessDeniedKimImpl;
     private final DataSource dataSource;
 
-    public WebSecurityKimConfigurer(AuthenticationFailureKimImpl authenticationFailureKimImpl, UserDetailsServiceKimImpl userDetailsServiceKimImpl, InvalidSessionStrategyKimImpl invalidSessionStrategyKimImpl, SessionInformationExpiredKimImpl sessionInformationExpiredKimImpl, AccessDeniedKimImpl accessDeniedKimImpl, DataSource dataSource) {
+    public WebSecurityKimConfigurer(AuthenticationFailureKimImpl authenticationFailureKimImpl, UserDetailsServiceKimImpl userDetailsServiceKimImpl, InvalidSessionStrategyKimImpl invalidSessionStrategyKimImpl, SessionInformationExpiredKimImpl sessionInformationExpiredKimImpl, AccessDeniedKimImpl accessDeniedKimImpl, @Qualifier("dataSource") DataSource dataSource) {
         this.authenticationFailureKimImpl = authenticationFailureKimImpl;
         this.userDetailsServiceKimImpl = userDetailsServiceKimImpl;
         this.invalidSessionStrategyKimImpl = invalidSessionStrategyKimImpl;
@@ -154,11 +155,12 @@ public class WebSecurityKimConfigurer extends WebSecurityConfigurerAdapter {
     }
 
     /**
-     * @param authenticationManagerBuilder
-     * @throws Exception
+     * setHideUserNotFoundExceptions false
+     *
+     * @param authenticationManagerBuilder amb
      */
     @Autowired
-    public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+    public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) {
         authenticationManagerBuilder.authenticationProvider(daoAuthenticationProvider());
     }
 }

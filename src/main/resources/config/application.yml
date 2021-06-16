@@ -34,10 +34,6 @@ spring:
     servlet:
       content-type: text/html
 management:
-  server:
-#    port: 15000
-  #    servlet:
-  #      context-path: /actuator
   endpoint:
     health:
       show-details: always
