@@ -18,6 +18,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.format.FormatterRegistry;
+import org.springframework.format.datetime.DateFormatter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -64,6 +66,12 @@ public class WebMvcConfigurerKimImpl implements WebMvcConfigurer {
         registry.addResourceHandler("/**").addResourceLocations("classpath:/static/").setCachePeriod(0);
     }
 
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addFormatterForFieldType(LocalDate.class, new DateFormatter(DEFAULT_DATE_FORMAT));
+        registry.addFormatterForFieldType(LocalDateTime.class, new DateFormatter(DEFAULT_DATE_TIME_FORMAT));
+        registry.addFormatterForFieldType(LocalTime.class, new DateFormatter(DEFAULT_TIME_FORMAT));
+    }
 
     /**
      * 默认日期时间格式
