@@ -1,5 +1,6 @@
 package kim.kin.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.*;
 import org.springframework.data.relational.core.mapping.Column;
@@ -38,6 +39,7 @@ public class UserInfo implements Serializable {
 
     @CreatedBy
     private String createdBy;
+
     @CreatedDate
     private LocalDateTime createdDatetime;
 

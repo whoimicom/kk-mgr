@@ -25,6 +25,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.io.File;
@@ -71,6 +72,11 @@ public class WebMvcConfigurerKimImpl implements WebMvcConfigurer {
         registry.addFormatterForFieldType(LocalDate.class, new DateFormatter(DEFAULT_DATE_FORMAT));
         registry.addFormatterForFieldType(LocalDateTime.class, new DateFormatter(DEFAULT_DATE_TIME_FORMAT));
         registry.addFormatterForFieldType(LocalTime.class, new DateFormatter(DEFAULT_TIME_FORMAT));
+    }
+
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+//        registry.addViewController("/").setViewName("index.html");
     }
 
     /**
@@ -130,11 +136,21 @@ public class WebMvcConfigurerKimImpl implements WebMvcConfigurer {
         return new LocalDateSerializer(DateTimeFormatter.ISO_LOCAL_DATE);
     }
 
-    @Bean
-    public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer() {
-        return builder -> builder.serializerByType(LocalDate.class, localDateDeserializer());
-    }
+//    @Bean
+//    public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer() {
+//        return builder -> builder.serializerByType(LocalDate.class, localDateDeserializer());
+//    }
 
+    @Bean
+    @Primary
+    public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer() {
+        return builder -> builder.serializerByType(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(DEFAULT_DATE_TIME_FORMAT)))
+                .serializerByType(LocalDate.class, new LocalDateSerializer(DateTimeFormatter.ofPattern(DEFAULT_DATE_FORMAT)))
+                .serializerByType(LocalTime.class, new LocalTimeSerializer(DateTimeFormatter.ofPattern(DEFAULT_TIME_FORMAT)))
+                .deserializerByType(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(DEFAULT_DATE_TIME_FORMAT)))
+                .deserializerByType(LocalDate.class, new LocalDateDeserializer(DateTimeFormatter.ofPattern(DEFAULT_DATE_TIME_FORMAT)))
+                .deserializerByType(LocalTime.class, new LocalTimeDeserializer(DateTimeFormatter.ofPattern(DEFAULT_TIME_FORMAT)));
+    }
     /**
      * Json序列化和反序列化转换器，用于转换Post请求体中的json以及将我们的对象序列化为返回响应的json
      */

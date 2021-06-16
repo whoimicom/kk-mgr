@@ -19,7 +19,7 @@
             <td th:text="${userInfo.enabled}"></td>
             <td th:text="${userInfo.avatar}"></td>
             <td th:text="${userInfo.email}"></td>
-            <td th:text="${userInfo.createdDatetime}"></td>
+            <td th:text="${#temporals.format(userInfo.createdDatetime, 'yyyy-MM-dd HH:mm:ss')}"></td>
         </tr>
         </tbody>
     </table>
