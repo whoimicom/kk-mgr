@@ -35,7 +35,7 @@ spring:
       content-type: text/html
 management:
   server:
-    port: 15000
+#    port: 15000
   #    servlet:
   #      context-path: /actuator
   endpoint:
@@ -43,14 +43,13 @@ management:
       show-details: always
     shutdown:
       enabled: true
-#  endpoints:
-#    jmx:
-#      exposure:
-#        include: '*'
-#    web:
-#      base-path: /actuator
-#      exposure:
-#        include: '/actuator/*'
+  endpoints:
+    jmx:
+      exposure:
+        include: '*'
+    web:
+      exposure:
+        include: '*'
 kim:
   kin:
     channel-no: '000'

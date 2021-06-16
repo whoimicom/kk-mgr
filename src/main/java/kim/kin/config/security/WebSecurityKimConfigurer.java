@@ -106,6 +106,7 @@ public class WebSecurityKimConfigurer extends WebSecurityConfigurerAdapter {
                         "/authenticate",
                         "/logout.html",
                         "signin",
+//                        "/actuator/*",
                         "/logout"
                 ).permitAll()
                 .anyRequest().authenticated();

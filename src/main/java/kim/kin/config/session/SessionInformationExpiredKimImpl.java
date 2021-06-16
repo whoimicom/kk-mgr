@@ -17,7 +17,7 @@ import java.io.IOException;
  */
 @Component
 public class SessionInformationExpiredKimImpl implements SessionInformationExpiredStrategy {
-private static final Logger logger = LoggerFactory.getLogger(SessionInformationExpiredKimImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(SessionInformationExpiredKimImpl.class);
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Override
