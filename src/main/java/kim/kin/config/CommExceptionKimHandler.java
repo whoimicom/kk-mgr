@@ -7,10 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.bind.annotation.*;
 
 import java.beans.PropertyEditorSupport;
 import java.time.LocalDate;
@@ -24,6 +21,7 @@ import static org.springframework.http.ResponseEntity.badRequest;
  * @author choky
  */
 @RestControllerAdvice
+
 public class CommExceptionKimHandler {
     private final Logger logger = LoggerFactory.getLogger(CommExceptionKimHandler.class);
 
@@ -43,6 +41,10 @@ public class CommExceptionKimHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
     }
 
+    /**
+     * get param trans
+     * @param binder WebDataBinder
+     */
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(LocalDate.class, new PropertyEditorSupport() {

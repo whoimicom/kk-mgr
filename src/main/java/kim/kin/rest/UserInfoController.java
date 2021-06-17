@@ -1,5 +1,6 @@
 package kim.kin.rest;
 
+import kim.kin.config.security.AnonymousKimAccess;
 import kim.kin.kklog.LogKimAnnotation;
 import kim.kin.model.UserInfo;
 import kim.kin.service.UserInfoService;
@@ -16,12 +17,18 @@ import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.Temporal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -96,6 +103,7 @@ public class UserInfoController {
         return "user/userInfo.html";
     }
 
+
     @GetMapping("/testFragment.html")
     @LogKimAnnotation
     public String testFragment(Model model, Pageable pageable) {
@@ -118,5 +126,24 @@ public class UserInfoController {
         logger.info("getPageable:{}", page.getPageable());
         return "user/testFragment.html";
     }
+
+    /**
+     * http://localhost/kk-mgr/testDate?localDate=2021-06-17&localDateTime=2021-06-17 09:39:13&localTime=09:39:13
+     *
+     * @return
+     */
+    @RequestMapping("/testDate")
+//    @LogKimAnnotation
+    @ResponseBody
+    @AnonymousKimAccess
+    public List testDate(LocalDate localDate, LocalDateTime localDateTime, LocalTime localTime) {
+        logger.info("{}|{}|{}|", localDate, localDateTime, localTime);
+        ArrayList<Object> objects = new ArrayList<>();
+        objects.add(localDate);
+        objects.add(localDateTime);
+        objects.add(localTime);
+        return objects;
+    }
+
 
 }

@@ -10,6 +10,9 @@ import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.security.web.savedrequest.RequestCache;
+import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,17 +24,20 @@ import java.io.IOException;
  */
 @Component
 public class AuthenticationSuccessKimImpl implements AuthenticationSuccessHandler {
-    private final Logger logger= LoggerFactory.getLogger(AuthenticationSuccessKimImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(AuthenticationSuccessKimImpl.class);
     private ObjectMapper mapper = new ObjectMapper();
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+    private RequestCache requestCache = new HttpSessionRequestCache();
     private SessionRegistry sessionRegistry;
 
     public AuthenticationSuccessKimImpl() {
         super();
     }
+
     public AuthenticationSuccessKimImpl(SessionRegistry sessionRegistry) {
         this.sessionRegistry = sessionRegistry;
     }
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException {
@@ -42,7 +48,7 @@ public class AuthenticationSuccessKimImpl implements AuthenticationSuccessHandle
         Object principal = authentication.getPrincipal();
         UserKimDetails userDetails = (UserKimDetails) principal;
         userDetails.setRemoteAddress(remoteAddress);
-        request.getSession().setAttribute("userDetails",userDetails);
+        request.getSession().setAttribute("userDetails", userDetails);
 
 //        if (!LoginType.normal.equals(loginType)) {
 //            String sessionId = details.getSessionId();
@@ -60,6 +66,11 @@ public class AuthenticationSuccessKimImpl implements AuthenticationSuccessHandle
 
 //        response.setContentType(KkConstant.CONTENT_TYPE_JSON_UTF8);
 //        response.getWriter().write(mapper.writeValueAsString(ResponseEntity.ok()));
+
+//        SavedRequest savedRequest = requestCache.getRequest(request, response);
+//        String redirectUrl = savedRequest.getRedirectUrl();
+//        redirectStrategy.sendRedirect(request, response, redirectUrl);
+
         redirectStrategy.sendRedirect(request, response, "/index.html");
     }
 

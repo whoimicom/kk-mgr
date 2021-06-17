@@ -1,3 +1,11 @@
+POST {{host}}/testDate
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json;charset=utf-8
+
+{"localDate":"2021-06-17","localDateTime":"2021-06-17 09:39:13","localTime":"09:39:13"}
+
+###
 GET {{host}}/index.html
 Accept: */*
 Cache-Control: no-cache

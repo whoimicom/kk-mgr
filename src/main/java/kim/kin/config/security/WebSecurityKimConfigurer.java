@@ -6,10 +6,13 @@ import kim.kin.config.handler.AuthenticationSuccessKimImpl;
 import kim.kin.config.handler.LogoutHandlerKimImpl;
 import kim.kin.config.session.InvalidSessionStrategyKimImpl;
 import kim.kin.config.session.SessionInformationExpiredKimImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -27,17 +30,22 @@ import org.springframework.security.web.authentication.rememberme.JdbcTokenRepos
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.session.InvalidSessionStrategy;
 import org.springframework.security.web.session.SimpleRedirectInvalidSessionStrategy;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import javax.sql.DataSource;
+import java.util.*;
 
 /**
  * @author choky
  */
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class WebSecurityKimConfigurer extends WebSecurityConfigurerAdapter {
-
+    private static final Logger logger = LoggerFactory.getLogger(WebSecurityKimConfigurer.class);
     private final AuthenticationFailureKimImpl authenticationFailureKimImpl;
     private final UserDetailsServiceKimImpl userDetailsServiceKimImpl;
     private final InvalidSessionStrategyKimImpl invalidSessionStrategyKimImpl;
@@ -73,6 +81,9 @@ public class WebSecurityKimConfigurer extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         String[] anonResourcesUrl = {"/css/**", "/js/**", "/fonts/**", "/img/**", "*.svg", "*.png", "*.js", "*.css", "*.ico"};
+
+        Map<RequestMappingInfo, HandlerMethod> handlerMethodMap = getApplicationContext().getBean("requestMappingHandlerMapping", RequestMappingHandlerMapping.class).getHandlerMethods();
+        Map<String, Set<String>> anonymousUrls = anonymousUrls(handlerMethodMap);
         httpSecurity.exceptionHandling().accessDeniedHandler(accessDeniedKimImpl);
         // formLogin
         httpSecurity.formLogin()
@@ -88,8 +99,8 @@ public class WebSecurityKimConfigurer extends WebSecurityConfigurerAdapter {
                 .userDetailsService(userDetailsServiceKimImpl);
         // sessionManagement
         httpSecurity.sessionManagement()
-//                .invalidSessionStrategy(invalidSessionStrategy())
-                .invalidSessionUrl("/login.html")
+                .invalidSessionStrategy(invalidSessionStrategy())
+//                .invalidSessionUrl("/login.html")
                 .maximumSessions(1)
                 .expiredSessionStrategy(sessionInformationExpiredKimImpl)
                 .sessionRegistry(sessionRegistry());
@@ -107,9 +118,19 @@ public class WebSecurityKimConfigurer extends WebSecurityConfigurerAdapter {
                         "/authenticate",
                         "/logout.html",
                         "signin",
+                        "/testDate",
+                        "testDate",
 //                        "/actuator/*",
                         "/logout"
-                ).permitAll()
+                )
+                .permitAll()
+                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .antMatchers(HttpMethod.GET, anonymousUrls.get(HttpMethod.GET.toString()).toArray(String[]::new)).permitAll()
+                .antMatchers(HttpMethod.POST, anonymousUrls.get(HttpMethod.GET.toString()).toArray(String[]::new)).permitAll()
+                .antMatchers(HttpMethod.PUT, anonymousUrls.get(HttpMethod.GET.toString()).toArray(String[]::new)).permitAll()
+                .antMatchers(HttpMethod.PATCH, anonymousUrls.get(HttpMethod.GET.toString()).toArray(String[]::new)).permitAll()
+                .antMatchers(HttpMethod.DELETE, anonymousUrls.get(HttpMethod.GET.toString()).toArray(String[]::new)).permitAll()
+                .antMatchers(anonymousUrls.get("ALL").toArray(String[]::new)).permitAll()
                 .anyRequest().authenticated();
         // disable csrf
         httpSecurity.csrf().disable();
@@ -163,4 +184,62 @@ public class WebSecurityKimConfigurer extends WebSecurityConfigurerAdapter {
     public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) {
         authenticationManagerBuilder.authenticationProvider(daoAuthenticationProvider());
     }
+
+
+    private Map<String, Set<String>> anonymousUrls(Map<RequestMappingInfo, HandlerMethod> handlerMethodMap) {
+        Map<String, Set<String>> anonymousUrls = new HashMap<>(6);
+        Set<String> get = new HashSet<>();
+        Set<String> post = new HashSet<>();
+        Set<String> put = new HashSet<>();
+        Set<String> patch = new HashSet<>();
+        Set<String> delete = new HashSet<>();
+        Set<String> all = new HashSet<>();
+        for (Map.Entry<RequestMappingInfo, HandlerMethod> infoEntry : handlerMethodMap.entrySet()) {
+            HandlerMethod handlerMethod = infoEntry.getValue();
+            AnonymousKimAccess anonymousKimAccess = handlerMethod.getMethodAnnotation(AnonymousKimAccess.class);
+            if (null != anonymousKimAccess) {
+                List<RequestMethod> requestMethods = new ArrayList<>(infoEntry.getKey().getMethodsCondition().getMethods());
+                if (0 != requestMethods.size()) {
+                    HttpMethod httpMethod = HttpMethod.resolve(requestMethods.get(0).name());
+                    switch (Objects.requireNonNull(httpMethod)) {
+                        case GET:
+                            assert infoEntry.getKey().getPatternsCondition() != null;
+                            get.addAll(infoEntry.getKey().getPatternsCondition().getPatterns());
+                            break;
+                        case POST:
+                            assert infoEntry.getKey().getPatternsCondition() != null;
+                            post.addAll(infoEntry.getKey().getPatternsCondition().getPatterns());
+                            break;
+                        case PUT:
+                            assert infoEntry.getKey().getPatternsCondition() != null;
+                            put.addAll(infoEntry.getKey().getPatternsCondition().getPatterns());
+                            break;
+                        case PATCH:
+                            assert infoEntry.getKey().getPatternsCondition() != null;
+                            patch.addAll(infoEntry.getKey().getPatternsCondition().getPatterns());
+                            break;
+                        case DELETE:
+                            assert infoEntry.getKey().getPatternsCondition() != null;
+                            delete.addAll(infoEntry.getKey().getPatternsCondition().getPatterns());
+                            break;
+                        default:
+                            break;
+                    }
+                } else {
+                    all.addAll(infoEntry.getKey().getPatternsCondition().getPatterns());
+                }
+
+            }
+        }
+        anonymousUrls.put(HttpMethod.GET.toString(), get);
+        anonymousUrls.put(HttpMethod.POST.toString(), post);
+        anonymousUrls.put(HttpMethod.PUT.toString(), put);
+        anonymousUrls.put(HttpMethod.PATCH.toString(), patch);
+        anonymousUrls.put(HttpMethod.DELETE.toString(), delete);
+        anonymousUrls.put("ALL", all);
+        logger.info(String.valueOf(anonymousUrls));
+        logger.info(Arrays.toString(anonymousUrls.get("ALL").toArray(String[]::new)));
+        return anonymousUrls;
+    }
+
 }
