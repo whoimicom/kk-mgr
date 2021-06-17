@@ -23,8 +23,8 @@ import java.io.IOException;
 @Component
 public class AccessDeniedKimImpl implements AccessDeniedHandler {
     private static final Logger logger = LoggerFactory.getLogger(AccessDeniedKimImpl.class);
-    private ObjectMapper mapper = new ObjectMapper();
-    private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+    private final ObjectMapper mapper = new ObjectMapper();
+    private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
