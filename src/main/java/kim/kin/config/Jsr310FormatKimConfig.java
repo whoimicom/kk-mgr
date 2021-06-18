@@ -14,7 +14,6 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -112,7 +111,7 @@ public class Jsr310FormatKimConfig {
      */
     @Bean
     @Primary
-    public ObjectMapper ObjectMapper() {
+    public ObjectMapper objectMapper() {
         logger.info("ObjectMapper:");
         ObjectMapper objectMapper = new ObjectMapper()
                 .registerModule(new ParameterNamesModule())
