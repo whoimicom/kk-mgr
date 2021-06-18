@@ -43,11 +43,14 @@ public class DateController {
         LocalDate localDate = timeTemp.getLocalDate();
         LocalDateTime localDateTime = timeTemp.getLocalDateTime();
         LocalTime localTime = timeTemp.getLocalTime();
-        logger.info("{}|{}|{}|", localDate, localDateTime, localTime);
+        LocalDateTime localDateTimeN = timeTemp.getLocalDateTimeN();
+        logger.info("{}|{}|{}|{}", localDate, localDateTime, localTime,localDateTimeN);
         ArrayList<Object> objects = new ArrayList<>();
         objects.add(localDate);
         objects.add(localDateTime);
         objects.add(localTime);
+        objects.add(localDateTimeN);
+        objects.add(timeTemp);
         return objects;
     }
 

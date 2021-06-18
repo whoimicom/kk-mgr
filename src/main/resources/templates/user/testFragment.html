@@ -38,6 +38,7 @@
                         <th>avatar</th>
                         <th>email</th>
                         <th>createdDatetime</th>
+                        <th>createdDatetime</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -48,7 +49,7 @@
                         <td th:text="${userInfo.enabled}"></td>
                         <td th:text="${userInfo.avatar}"></td>
                         <td th:text="${userInfo.email}"></td>
-                        <!-- <td th:text="${userInfo.createdDatetime}"></td>-->
+                         <td th:text="${userInfo.createdDatetime}"></td>
                         <!-- <td th:text="${#dates.format(userInfo.createdDatetime, 'yyyy-MM-dd')}"></td>-->
                         <!--  java8 time -->
                         <td th:text="${#temporals.format(userInfo.createdDatetime, 'yyyy-MM-dd HH:mm:ss')}"></td>

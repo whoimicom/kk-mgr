@@ -38,6 +38,7 @@ public class UserInfo implements Serializable {
     private String gender;
 
     @CreatedBy
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private String createdBy;
 
     @CreatedDate

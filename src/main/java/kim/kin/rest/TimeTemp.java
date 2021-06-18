@@ -1,6 +1,7 @@
 package kim.kin.rest;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -15,16 +16,17 @@ public class TimeTemp implements Serializable {
     private LocalDate localDate;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime localDateTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy/MM/dd HH:mm:ss")
+    private LocalDateTime localDateTimeN;
     private LocalTime localTime;
 
-    public TimeTemp() {
-        super();
+    public LocalDateTime getLocalDateTimeN() {
+        return localDateTimeN;
     }
 
-    public TimeTemp(LocalDate localDate, LocalDateTime localDateTime, LocalTime localTime) {
-        this.localDate = localDate;
-        this.localDateTime = localDateTime;
-        this.localTime = localTime;
+    public void setLocalDateTimeN(LocalDateTime localDateTimeN) {
+        this.localDateTimeN = localDateTimeN;
     }
 
     public LocalDate getLocalDate() {
