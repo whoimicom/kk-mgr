@@ -1,7 +1,6 @@
 package kim.kin.utils;
 
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
@@ -14,17 +13,22 @@ import java.util.Objects;
 @Service
 public class DataSourcePropertiesUtil {
     private final DataSourceProperties dataSourceProperties;
-    private final DataSourceTransactionManager dataSourceTransactionManager;
 
-    public DataSourcePropertiesUtil(DataSourceProperties dataSourceProperties, DataSourceTransactionManager dataSourceTransactionManager) {
+    public DataSourcePropertiesUtil(DataSourceProperties dataSourceProperties) {
         this.dataSourceProperties = dataSourceProperties;
-        this.dataSourceTransactionManager = dataSourceTransactionManager;
     }
 
+//    private final DataSourceTransactionManager dataSourceTransactionManager;
+
+//    public DataSourcePropertiesUtil(DataSourceProperties dataSourceProperties, DataSourceTransactionManager dataSourceTransactionManager) {
+//        this.dataSourceProperties = dataSourceProperties;
+//        this.dataSourceTransactionManager = dataSourceTransactionManager;
+//    }
+
     public void test() throws SQLException {
-        String databaseProductName = Objects.requireNonNull(dataSourceTransactionManager.getDataSource()).getConnection()
-                .getMetaData().getDatabaseProductName();
-        System.out.println(databaseProductName);
+//        String databaseProductName = Objects.requireNonNull(dataSourceTransactionManager.getDataSource()).getConnection()
+//                .getMetaData().getDatabaseProductName();
+//        System.out.println(databaseProductName);
         printAllFields(dataSourceProperties);
     }
 
