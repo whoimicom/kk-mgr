@@ -5,7 +5,21 @@ server:
 spring:
   profiles:
     active: sit
+  jpa:
+    open-in-view: true
+    show-sql: false
+#    generate-ddl: false
+    properties:
+      entity-scan-packages: kim.kin
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
   datasource:
+    type: com.mysql.cj.jdbc.MysqlXADataSource
     hikari:
       auto-commit: true
       connection-test-query: SELECT 1
@@ -15,7 +29,6 @@ spring:
       maximum-pool-size: 20
       minimum-idle: 10
       pool-name: DatebookHikariCP
-    type: com.zaxxer.hikari.HikariDataSource
   jackson:
     serialization:
       write-dates-as-timestamps: false
@@ -34,6 +47,7 @@ spring:
     cache: false
     servlet:
       content-type: text/html
+
 management:
   endpoint:
     health:
@@ -54,4 +68,20 @@ kim:
   kin:
     channel-no: '000'
     file-path: /data/file
+
+kieserver:
+  casemgmt:
+    enabled: true
+  dmn:
+    enabled: true
+  drools:
+    enabled: true
+  jbpm:
+    enabled: true
+  jbpmui:
+    enabled: true
+  location: http://172.16.2.161:8080/rest/server
+  serverId: business-application-service
+  serverName: business-application-service
+
 
