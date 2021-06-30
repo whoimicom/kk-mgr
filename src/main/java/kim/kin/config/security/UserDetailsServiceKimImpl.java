@@ -1,7 +1,7 @@
 package kim.kin.config.security;
 
 import kim.kin.model.UserKimDetails;
-import kim.kin.model.UserInfo;
+import kim.kin.repository.UserInfo;
 import kim.kin.repository.UserInfoRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

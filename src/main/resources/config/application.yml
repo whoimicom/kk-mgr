@@ -47,6 +47,9 @@ management:
     web:
       exposure:
         include: '*'
+jbpm:
+  executor:
+    enabled: false
 kim:
   kin:
     channel-no: '000'

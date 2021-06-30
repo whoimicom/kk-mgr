@@ -1,4 +1,4 @@
-package kim.kin.model;
+package kim.kin.repository;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +16,8 @@ import java.time.LocalDateTime;
 /**
  * @author choky
  */
-@Table(name="kk_user_info")
 @Entity
+@Table(name="user_info")
 public class UserInfo implements Serializable {
 
     @Id
@@ -35,23 +35,27 @@ public class UserInfo implements Serializable {
     private String avatar;
     @Column
     private String introduction;
-
+    @Column
     private String email;
-
+    @Column
     private String mobile;
-
+    @Column
     private String gender;
 
-    @CreatedBy
+//    @CreatedBy
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Column
     private String createdBy;
 
-    @CreatedDate
+//    @CreatedDate
+    @Column
     private LocalDateTime createdDatetime;
 
-    @LastModifiedBy
+//    @LastModifiedBy
+    @Column
     private String lastModifiedBy;
-    @LastModifiedDate
+//    @LastModifiedDate
+    @Column
     private LocalDateTime lastModifiedDatetime;
 
 

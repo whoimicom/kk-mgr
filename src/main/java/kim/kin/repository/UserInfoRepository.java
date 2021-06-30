@@ -1,6 +1,5 @@
 package kim.kin.repository;
 
-import kim.kin.model.UserInfo;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;

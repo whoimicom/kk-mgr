@@ -1,7 +1,7 @@
 package kim.kin.service;
 
 import kim.kin.model.UserInfoDTO;
-import kim.kin.model.UserInfo;
+import kim.kin.repository.UserInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
