@@ -1,7 +1,7 @@
 package kim.kin.service.impl;
 
 import kim.kin.exception.ServicesKimException;
-import kim.kin.repository.UserInfo;
+import kim.kin.model.UserInfo;
 import kim.kin.model.UserInfoDTO;
 import kim.kin.repository.UserInfoRepository;
 import kim.kin.service.UserInfoService;

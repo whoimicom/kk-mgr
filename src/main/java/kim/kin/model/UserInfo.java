@@ -1,4 +1,4 @@
-package kim.kin.repository;
+package kim.kin.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
  * @author choky
  */
 @Entity
-@Table(name="user_info")
+@Table(name="kk_user_info")
 public class UserInfo implements Serializable {
 
     @Id
@@ -42,20 +42,20 @@ public class UserInfo implements Serializable {
     @Column
     private String gender;
 
-//    @CreatedBy
+    @CreatedBy
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column
+    @Column(name = "created_by")
     private String createdBy;
 
-//    @CreatedDate
-    @Column
+    @CreatedDate
+    @Column(name = "created_datetime")
     private LocalDateTime createdDatetime;
 
-//    @LastModifiedBy
-    @Column
+    @LastModifiedBy
+    @Column(name = "last_modified_by")
     private String lastModifiedBy;
-//    @LastModifiedDate
-    @Column
+    @LastModifiedDate
+    @Column(name = "last_modified_datetime")
     private LocalDateTime lastModifiedDatetime;
 
 
@@ -180,13 +180,16 @@ public class UserInfo implements Serializable {
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", enabled=" + enabled +
                 ", avatar='" + avatar + '\'' +
                 ", introduction='" + introduction + '\'' +
                 ", email='" + email + '\'' +
                 ", mobile='" + mobile + '\'' +
                 ", gender='" + gender + '\'' +
+                ", createdBy='" + createdBy + '\'' +
+                ", createdDatetime=" + createdDatetime +
+                ", lastModifiedBy='" + lastModifiedBy + '\'' +
+                ", lastModifiedDatetime=" + lastModifiedDatetime +
                 '}';
     }
-
-
 }

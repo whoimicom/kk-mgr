@@ -9,6 +9,12 @@ spring:
     password: im@kin.kim[Z+kb5ctzpOaIjjijiwNzelvDIsNhdU0jgoFlUKugDwWE4jqNdPZrWGBgomkWfJ46zxtfpEb+Sb4JZo9O560lKlCcXYAjOudVJj5UD9WS8uXkex+WruwZvavr3SNHpMuNA5rqGeytYrEHGplck+SKQWTxeRX30wg+b4nbZyo3y8Wpnb3wUB0TEEWm6uVa/voh2q3hqZiFpGAbrxne73dfQ0c3RP0YSNQ8vXlZmOr536sSMY2Etgy9K0zsoxRirrbYzGsguxITlMZpfrGZWJ/7c1ulzzeu6Fzapr+WSveWpoulGsQh0gRXoC0G6k3AywOySTu3YXVBPXduEsimAYeMUA==]
     port: 6379
     database: 0
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        hbm2ddl:
+          auto: update
 jasypt:
   encryptor:
     #    algorithm: PBEWITHHMACSHA512ANDAES_256
