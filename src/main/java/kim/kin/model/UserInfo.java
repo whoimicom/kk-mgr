@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
  * @author choky
  */
 @Entity
-@Table(name="kk_user_info")
+@Table(name = "kk_user_info")
 public class UserInfo implements Serializable {
 
     @Id

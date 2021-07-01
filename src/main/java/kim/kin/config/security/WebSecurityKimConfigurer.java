@@ -121,6 +121,7 @@ public class WebSecurityKimConfigurer extends WebSecurityConfigurerAdapter {
                         "/logout.html",
                         "signin",
                         "/testDate",
+                        "/jbpm/*",
                         "testDate",
 //                        "/actuator/*",
                         "/logout"

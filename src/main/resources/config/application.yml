@@ -62,27 +62,17 @@ management:
     web:
       exposure:
         include: '*'
-jbpm:
-  executor:
-    enabled: false
 kim:
   kin:
     channel-no: '000'
     file-path: /data/file
 
-kieserver:
-  casemgmt:
-    enabled: true
-  dmn:
-    enabled: true
-  drools:
-    enabled: true
-  jbpm:
-    enabled: true
-  jbpmui:
-    enabled: true
-  location: http://172.16.2.161:8080/rest/server
-  serverId: business-application-service
-  serverName: business-application-service
+jbpm:
+  executor:
+    enabled: false
+  default:
+    processId: com.sample.bpmn.hello
+  bpmn2file:
+    path: test.bpmn,hello.bpmn
 
 

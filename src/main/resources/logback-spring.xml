@@ -67,11 +67,11 @@
     </appender>
 
     <!--    config data jpa log-->
-    <!--    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE"/>-->
-    <!--    <logger name="org.hibernate.type.descriptor.sql.BasicExtractor" level="DEBUG"/>-->
-    <!--    <logger name="org.hibernate.SQL" level="DEBUG"/>-->
-    <!--    <logger name="org.hibernate.engine.QueryParameters" level="DEBUG"/>-->
-    <!--    <logger name="org.hibernate.engine.query.HQLQueryPlan" level="DEBUG"/>-->
+    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE"/>
+    <logger name="org.hibernate.type.descriptor.sql.BasicExtractor" level="DEBUG"/>
+    <logger name="org.hibernate.SQL" level="DEBUG"/>
+    <logger name="org.hibernate.engine.QueryParameters" level="DEBUG"/>
+    <logger name="org.hibernate.engine.query.HQLQueryPlan" level="DEBUG"/>
 
     <!--     config jdbc log-->
     <logger name="org.springframework.jdbc.core.JdbcTemplate" level="debug"/>
