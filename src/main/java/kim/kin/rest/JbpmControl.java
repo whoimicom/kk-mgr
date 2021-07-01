@@ -28,8 +28,8 @@ import java.util.Map;
 @RequestMapping(value = "/jbpm")
 @Configuration
 public class JbpmControl {
-    @Value("${jbpm.default.processId}")
-    private String defaultProcessId="Test.jbpm";
+//    @Value("${jbpm.default.processId}")
+    private String defaultProcessId="test";
 
     private final KieSession kieSession;
     private final TaskService taskService;

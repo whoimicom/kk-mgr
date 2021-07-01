@@ -71,7 +71,7 @@ jbpm:
   executor:
     enabled: false
   default:
-    processId: com.sample.bpmn.hello
+    processId: test
   bpmn2file:
     path: test.bpmn,hello.bpmn
 
