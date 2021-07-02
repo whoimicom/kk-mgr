@@ -1,5 +1,8 @@
 package kim.kin.rest;
 
+import org.jbpm.services.api.DeploymentService;
+import org.jbpm.services.api.RuntimeDataService;
+import org.jbpm.services.api.model.DeploymentUnit;
 import org.jsoup.helper.StringUtil;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
@@ -7,6 +10,8 @@ import org.kie.api.task.TaskService;
 import org.kie.api.task.model.Status;
 import org.kie.api.task.model.Task;
 import org.kie.api.task.model.TaskSummary;
+import org.kie.internal.runtime.conf.RuntimeStrategy;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
@@ -33,16 +38,28 @@ public class JbpmControl {
 
     private final KieSession kieSession;
     private final TaskService taskService;
+    private final RuntimeDataService runtimeDataService;
+    private final DeploymentService deploymentService;
 
-    public JbpmControl(KieSession kieSession, TaskService taskService) {
+
+    @GetMapping(value = "startProcess")
+    public ResponseEntity<Object> startProcess1(String userId, String processId) {
+
+        long obj = startProcess(userId, processId);
+        return ResponseEntity.ok(obj);
+    }
+    public JbpmControl(KieSession kieSession, TaskService taskService, RuntimeDataService runtimeDataService, DeploymentService deploymentService) {
         this.kieSession = kieSession;
         this.taskService = taskService;
+        this.runtimeDataService = runtimeDataService;
+        this.deploymentService = deploymentService;
     }
 
 
     public Long startProcess(String userId) {
         Map<String, Object> data = new HashMap<>(16);
         data.put("Manager", userId);
+
         return kieSession.startProcess(defaultProcessId, data).getId();
     }
 
@@ -93,11 +110,7 @@ public class JbpmControl {
     }
 
 
-    @GetMapping(value = "startProcess")
-    public ResponseEntity<Object> startProcess1(String userId, String processId) {
-        long obj = startProcess(userId, processId);
-        return ResponseEntity.ok(obj);
-    }
+
 
     @GetMapping(value = "startProcessNew")
     public ResponseEntity<Object> startProcessNew(String userId, String processId) {
