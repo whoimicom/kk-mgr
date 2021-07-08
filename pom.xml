@@ -17,16 +17,10 @@
     <properties>
         <java.version>11</java.version>
         <skipTests>true</skipTests>
-        <kie.version>7.56.0.Final</kie.version>
+        <flowable.version>6.6.0</flowable.version>
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.kie</groupId>
-<!--            <artifactId>kie-server-spring-boot-starter-jbpm</artifactId>-->
-            <artifactId>jbpm-spring-boot-starter-basic</artifactId>
-            <version>${kie.version}</version>
-        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -115,6 +109,16 @@
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
             <version>2.3.1</version>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.flowable</groupId>-->
+<!--            <artifactId>flowable-spring-boot-starter-rest</artifactId>-->
+<!--            <version>${flowable.version}</version>-->
+<!--        </dependency>-->
+        <dependency>
+            <groupId>org.flowable</groupId>
+            <artifactId>flowable-spring-boot-starter</artifactId>
+            <version>${flowable.version}</version>
         </dependency>
     </dependencies>
 
