@@ -1,9 +1,9 @@
 package kim.kin.service.impl;
 
-import org.flowable.common.engine.impl.identity.Authentication;
+/*import org.flowable.common.engine.impl.identity.Authentication;
 import org.flowable.engine.*;
 import org.flowable.engine.runtime.ProcessInstance;
-import org.flowable.task.api.Task;
+import org.flowable.task.api.Task;*/
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -20,17 +20,17 @@ import java.util.Map;
 @Service
 public class FlowTestService {
     private static final Logger logger = LoggerFactory.getLogger(FlowTestService.class);
-    private final RuntimeService runtimeService;
+/*    private final RuntimeService runtimeService;
     private final RepositoryService repositoryService;
     private final TaskService taskService;
     private final ManagementService managementService;
-    /**
+    *//**
      * ACT_ID_GROUP 用户组
      * ACT_ID_USER  用户表
      * ACT_ID_MEMBERSHIP    用户、组关系表
      * ACT_ID_PRIV  权限表
      * ACT_ID_PRIV_MAPPING  用户权限关系表
-     */
+     *//*
     private final IdentityService identityService;
     private final HistoryService historyService;
     private final FormService formService;
@@ -96,9 +96,9 @@ public class FlowTestService {
         taskService.complete(taskId, variables);
     }
 
-    /**
+    *//**
      * set and get variables
-     */
+     *//*
     public void variables() {
         String businessKey = "businessKey";
         String executionId = "executionId";
@@ -119,6 +119,6 @@ public class FlowTestService {
         Map<String, Object> execLocalMap = runtimeService.getVariablesLocal(executionId);
         Map<String, Object> map = taskService.getVariables(taskId);
         Map<String, Object> localMap = taskService.getVariablesLocal(taskId);
-    }
+    }*/
 
 }
