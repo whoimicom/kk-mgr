@@ -50,7 +50,7 @@ public class WebSecurityKimConfigurer extends WebSecurityConfigurerAdapter {
     private static final Logger logger = LoggerFactory.getLogger(WebSecurityKimConfigurer.class);
     private final AuthenticationFailureKimImpl authenticationFailureKimImpl;
     private final UserDetailsServiceKimImpl userDetailsServiceKimImpl;
-    private final InvalidSessionStrategyKimImpl invalidSessionStrategyKimImpl;
+//    private final InvalidSessionStrategyKimImpl invalidSessionStrategyKimImpl;
     private final SessionInformationExpiredKimImpl sessionInformationExpiredKimImpl;
     private final AccessDeniedKimImpl accessDeniedKimImpl;
     private final DataSource dataSource;
@@ -58,7 +58,7 @@ public class WebSecurityKimConfigurer extends WebSecurityConfigurerAdapter {
     public WebSecurityKimConfigurer(AuthenticationFailureKimImpl authenticationFailureKimImpl, UserDetailsServiceKimImpl userDetailsServiceKimImpl, InvalidSessionStrategyKimImpl invalidSessionStrategyKimImpl, SessionInformationExpiredKimImpl sessionInformationExpiredKimImpl, AccessDeniedKimImpl accessDeniedKimImpl, @Qualifier("dataSource") DataSource dataSource) {
         this.authenticationFailureKimImpl = authenticationFailureKimImpl;
         this.userDetailsServiceKimImpl = userDetailsServiceKimImpl;
-        this.invalidSessionStrategyKimImpl = invalidSessionStrategyKimImpl;
+//        this.invalidSessionStrategyKimImpl = invalidSessionStrategyKimImpl;
         this.sessionInformationExpiredKimImpl = sessionInformationExpiredKimImpl;
         this.accessDeniedKimImpl = accessDeniedKimImpl;
         this.dataSource = dataSource;
@@ -129,10 +129,10 @@ public class WebSecurityKimConfigurer extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .antMatchers(HttpMethod.GET, anonymousUrls.get(HttpMethod.GET.toString()).toArray(String[]::new)).permitAll()
-                .antMatchers(HttpMethod.POST, anonymousUrls.get(HttpMethod.GET.toString()).toArray(String[]::new)).permitAll()
-                .antMatchers(HttpMethod.PUT, anonymousUrls.get(HttpMethod.GET.toString()).toArray(String[]::new)).permitAll()
-                .antMatchers(HttpMethod.PATCH, anonymousUrls.get(HttpMethod.GET.toString()).toArray(String[]::new)).permitAll()
-                .antMatchers(HttpMethod.DELETE, anonymousUrls.get(HttpMethod.GET.toString()).toArray(String[]::new)).permitAll()
+                .antMatchers(HttpMethod.POST, anonymousUrls.get(HttpMethod.POST.toString()).toArray(String[]::new)).permitAll()
+                .antMatchers(HttpMethod.PUT, anonymousUrls.get(HttpMethod.PUT.toString()).toArray(String[]::new)).permitAll()
+                .antMatchers(HttpMethod.PATCH, anonymousUrls.get(HttpMethod.PATCH.toString()).toArray(String[]::new)).permitAll()
+                .antMatchers(HttpMethod.DELETE, anonymousUrls.get(HttpMethod.DELETE.toString()).toArray(String[]::new)).permitAll()
                 .antMatchers(anonymousUrls.get("ALL").toArray(String[]::new)).permitAll()
                 .anyRequest().authenticated();
         // disable csrf
@@ -183,7 +183,7 @@ public class WebSecurityKimConfigurer extends WebSecurityConfigurerAdapter {
      *
      * @param authenticationManagerBuilder amb
      */
-    @Autowired
+//    @Autowired
     public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) {
         authenticationManagerBuilder.authenticationProvider(daoAuthenticationProvider());
     }
@@ -205,30 +205,31 @@ public class WebSecurityKimConfigurer extends WebSecurityConfigurerAdapter {
                 if (0 != requestMethods.size()) {
                     HttpMethod httpMethod = HttpMethod.resolve(requestMethods.get(0).name());
                     switch (Objects.requireNonNull(httpMethod)) {
-                        case GET:
+                        case GET -> {
                             assert infoEntry.getKey().getPatternsCondition() != null;
                             get.addAll(infoEntry.getKey().getPatternsCondition().getPatterns());
-                            break;
-                        case POST:
+                        }
+                        case POST -> {
                             assert infoEntry.getKey().getPatternsCondition() != null;
                             post.addAll(infoEntry.getKey().getPatternsCondition().getPatterns());
-                            break;
-                        case PUT:
+                        }
+                        case PUT -> {
                             assert infoEntry.getKey().getPatternsCondition() != null;
                             put.addAll(infoEntry.getKey().getPatternsCondition().getPatterns());
-                            break;
-                        case PATCH:
+                        }
+                        case PATCH -> {
                             assert infoEntry.getKey().getPatternsCondition() != null;
                             patch.addAll(infoEntry.getKey().getPatternsCondition().getPatterns());
-                            break;
-                        case DELETE:
+                        }
+                        case DELETE -> {
                             assert infoEntry.getKey().getPatternsCondition() != null;
                             delete.addAll(infoEntry.getKey().getPatternsCondition().getPatterns());
-                            break;
-                        default:
-                            break;
+                        }
+                        default -> {
+                        }
                     }
                 } else {
+                    assert infoEntry.getKey().getPatternsCondition() != null;
                     all.addAll(infoEntry.getKey().getPatternsCondition().getPatterns());
                 }
 

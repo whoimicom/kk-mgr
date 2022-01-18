@@ -12,7 +12,7 @@
     <property name="pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%-5level] %logger{36} - %msg%n"/>
     <property name="otherPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} \t %-5p \t %-10t \t %C \t %4L \t %m%n"/>
     <property name="patternColoring"
-              value="%red(%d{yyyy-MM-dd HH:mm:ss}) %green([%thread]) %highlight(%-5level) %boldMagenta(%logger{36}) - %gray(%msg%n)"/>
+              value="%red(%d{yyyy-MM-dd HH:mm:ss}) %green([%thread]) %highlight(%-5level) %boldMagenta(%logger{36}) - %msg%n"/>
     <contextName>${contextName}</contextName>
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
