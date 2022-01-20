@@ -6,6 +6,7 @@ import kim.kin.config.handler.AuthenticationSuccessKimImpl;
 import kim.kin.config.handler.LogoutHandlerKimImpl;
 import kim.kin.config.session.InvalidSessionStrategyKimImpl;
 import kim.kin.config.session.SessionInformationExpiredKimImpl;
+import kim.kin.repository.UserInfoRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,9 @@ import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.session.InvalidSessionStrategy;
@@ -54,6 +57,8 @@ public class WebSecurityKimConfigurer extends WebSecurityConfigurerAdapter {
     private final SessionInformationExpiredKimImpl sessionInformationExpiredKimImpl;
     private final AccessDeniedKimImpl accessDeniedKimImpl;
     private final DataSource dataSource;
+    @Autowired
+    private UserInfoRepository userInfoRepository;
 
     public WebSecurityKimConfigurer(AuthenticationFailureKimImpl authenticationFailureKimImpl, UserDetailsServiceKimImpl userDetailsServiceKimImpl, InvalidSessionStrategyKimImpl invalidSessionStrategyKimImpl, SessionInformationExpiredKimImpl sessionInformationExpiredKimImpl, AccessDeniedKimImpl accessDeniedKimImpl, @Qualifier("dataSource") DataSource dataSource) {
         this.authenticationFailureKimImpl = authenticationFailureKimImpl;
@@ -64,9 +69,34 @@ public class WebSecurityKimConfigurer extends WebSecurityConfigurerAdapter {
         this.dataSource = dataSource;
     }
 
+    // EMAIL
+    @Bean
+    public EmailCodeAuthenticationFilter emailCodeAuthenticationFilter() {
+        EmailCodeAuthenticationFilter emailCodeAuthenticationFilter = new EmailCodeAuthenticationFilter();
+        emailCodeAuthenticationFilter.setAuthenticationSuccessHandler(authenticationSucessHandler());
+        emailCodeAuthenticationFilter.setAuthenticationFailureHandler(authenticationFailureKimImpl);
+        return emailCodeAuthenticationFilter;
+    }
+    @Bean
+    public EmailCodeAuthenticationProvider emailCodeAuthenticationProvider() {
+        return new EmailCodeAuthenticationProvider(userInfoRepository);
+    }
+
+
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        super.configure(auth);
+        auth.userDetailsService(userDetailsServiceKimImpl).passwordEncoder(passwordEncoder());
+        //authenticationProvider 根据传入的自定义AuthenticationProvider添加身份AuthenticationProvider 。
+        auth.authenticationProvider(emailCodeAuthenticationProvider());
+
+
     }
 
     @Bean
@@ -80,6 +110,7 @@ public class WebSecurityKimConfigurer extends WebSecurityConfigurerAdapter {
         return new SimpleRedirectInvalidSessionStrategy("/login.html");
     }
 
+
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         String[] anonResourcesUrl = {"/css/**", "/js/**", "/fonts/**", "/img/**", "*.svg", "*.png", "*.js", "*.css", "*.ico"};
@@ -87,6 +118,10 @@ public class WebSecurityKimConfigurer extends WebSecurityConfigurerAdapter {
         Map<RequestMappingInfo, HandlerMethod> handlerMethodMap = getApplicationContext().getBean("requestMappingHandlerMapping", RequestMappingHandlerMapping.class).getHandlerMethods();
         Map<String, Set<String>> anonymousUrls = anonymousUrls(handlerMethodMap);
         httpSecurity.exceptionHandling().accessDeniedHandler(accessDeniedKimImpl);
+        httpSecurity
+                .addFilterBefore(emailCodeAuthenticationFilter(), AbstractPreAuthenticatedProcessingFilter.class);
+
+
         // formLogin
         httpSecurity.formLogin()
                 .loginPage("/login.html")

@@ -22,5 +22,7 @@ public interface UserInfoRepository extends PagingAndSortingRepository<UserInfo,
      */
     Optional<UserInfo> findByUsername(String username);
 
+    Optional<UserInfo> findByPassword(String password);
+    Optional<UserInfo> findByEmail(String email);
 
 }
