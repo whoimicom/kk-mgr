@@ -41,7 +41,6 @@ public class AuthenticationSuccessKimImpl implements AuthenticationSuccessHandle
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException {
-        logger.info("");
         WebAuthenticationDetails details = (WebAuthenticationDetails) authentication.getDetails();
         String remoteAddress = details.getRemoteAddress();
 

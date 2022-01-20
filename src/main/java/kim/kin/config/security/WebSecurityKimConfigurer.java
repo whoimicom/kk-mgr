@@ -27,7 +27,6 @@ import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
@@ -53,7 +52,7 @@ public class WebSecurityKimConfigurer extends WebSecurityConfigurerAdapter {
     private static final Logger logger = LoggerFactory.getLogger(WebSecurityKimConfigurer.class);
     private final AuthenticationFailureKimImpl authenticationFailureKimImpl;
     private final UserDetailsServiceKimImpl userDetailsServiceKimImpl;
-//    private final InvalidSessionStrategyKimImpl invalidSessionStrategyKimImpl;
+    //    private final InvalidSessionStrategyKimImpl invalidSessionStrategyKimImpl;
     private final SessionInformationExpiredKimImpl sessionInformationExpiredKimImpl;
     private final AccessDeniedKimImpl accessDeniedKimImpl;
     private final DataSource dataSource;
@@ -77,11 +76,11 @@ public class WebSecurityKimConfigurer extends WebSecurityConfigurerAdapter {
         emailCodeAuthenticationFilter.setAuthenticationFailureHandler(authenticationFailureKimImpl);
         return emailCodeAuthenticationFilter;
     }
+
     @Bean
     public EmailCodeAuthenticationProvider emailCodeAuthenticationProvider() {
         return new EmailCodeAuthenticationProvider(userInfoRepository);
     }
-
 
 
     @Bean
@@ -106,7 +105,7 @@ public class WebSecurityKimConfigurer extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public InvalidSessionStrategy invalidSessionStrategy() {
+    protected InvalidSessionStrategy invalidSessionStrategy() {
         return new SimpleRedirectInvalidSessionStrategy("/login.html");
     }
 
@@ -213,15 +212,11 @@ public class WebSecurityKimConfigurer extends WebSecurityConfigurerAdapter {
         return daoAuthenticationProvider;
     }
 
-    /**
-     * setHideUserNotFoundExceptions false
-     *
-     * @param authenticationManagerBuilder amb
-     */
-//    @Autowired
-    public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) {
+
+/*     @Autowired
+   public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) {
         authenticationManagerBuilder.authenticationProvider(daoAuthenticationProvider());
-    }
+    }*/
 
 
     private Map<String, Set<String>> anonymousUrls(Map<RequestMappingInfo, HandlerMethod> handlerMethodMap) {
