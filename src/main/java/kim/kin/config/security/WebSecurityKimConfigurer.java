@@ -203,14 +203,14 @@ public class WebSecurityKimConfigurer extends WebSecurityConfigurerAdapter {
      *
      * @return AuthenticationProvider
      */
-    @Bean
+/*    @Bean
     public AuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setUserDetailsService(userDetailsServiceKimImpl);
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         daoAuthenticationProvider.setHideUserNotFoundExceptions(false);
         return daoAuthenticationProvider;
-    }
+    }*/
 
 
 /*     @Autowired
