@@ -117,7 +117,7 @@ public class WebSecurityKimConfigurer extends WebSecurityConfigurerAdapter {
         Map<RequestMappingInfo, HandlerMethod> handlerMethodMap = getApplicationContext().getBean("requestMappingHandlerMapping", RequestMappingHandlerMapping.class).getHandlerMethods();
         Map<String, Set<String>> anonymousUrls = anonymousUrls(handlerMethodMap);
         httpSecurity.exceptionHandling().accessDeniedHandler(accessDeniedKimImpl);
-        httpSecurity
+        httpSecurity.authenticationProvider(emailCodeAuthenticationProvider())
                 .addFilterBefore(emailCodeAuthenticationFilter(), AbstractPreAuthenticatedProcessingFilter.class);
 
 
