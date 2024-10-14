@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 
 
 /**
- * @author choky
+ * @author whoimi
  */
 @Table("kk_user_info")
 public class UserInfo implements Serializable {

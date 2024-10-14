@@ -14,7 +14,7 @@ import java.util.Optional;
 /**
  * JdbcAuditing
  *
- * @author choky
+ * @author whoimi
  */
 @Configuration
 @EnableJdbcAuditing

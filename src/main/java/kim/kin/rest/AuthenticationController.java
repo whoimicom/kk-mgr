@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * @author choky
+ * @author whoimi
  */
 @RestController
 @CrossOrigin

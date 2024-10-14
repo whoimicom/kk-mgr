@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * @author choky
+ * @author whoimi
  */
 @Service
 public class UserDetailsServiceKimImpl implements UserDetailsService {

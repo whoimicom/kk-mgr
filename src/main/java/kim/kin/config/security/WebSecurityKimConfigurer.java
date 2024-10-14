@@ -38,7 +38,7 @@ import java.util.*;
 import static org.springframework.http.HttpMethod.*;
 
 /**
- * @author choky
+ * @author whoimi
  * @see <a href="https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter">spring-security-without-the-websecurityconfigureradapter</a>
  */
 @Configuration

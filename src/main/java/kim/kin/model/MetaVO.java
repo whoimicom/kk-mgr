@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  *
- * @author choky
+ * @author whoimi
  */
 public class MetaVO implements Serializable {
 

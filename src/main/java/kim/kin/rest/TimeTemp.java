@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 /**
- * @author choky
+ * @author whoimi
  */
 public class TimeTemp implements Serializable {
 

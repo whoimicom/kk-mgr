@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * @author choky
+ * @author whoimi
  */
 public class LogoutHandlerKimImpl implements LogoutHandler {
 private static final Logger logger = LoggerFactory.getLogger(LogoutHandlerKimImpl.class);

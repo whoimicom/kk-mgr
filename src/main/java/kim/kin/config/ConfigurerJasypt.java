@@ -20,7 +20,7 @@ import static com.ulisesbocchio.jasyptspringboot.util.AsymmetricCryptography.Key
 
 
 /**
- * @author choky
+ * @author whoimi
  */
 @Configuration
 @EnableEncryptableProperties

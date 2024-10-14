@@ -5,7 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * 工具类
- * @author choky
+ * @author whoimi
  */
 public class KimUtils {
     public static boolean isAjaxRequest(HttpServletRequest request) {

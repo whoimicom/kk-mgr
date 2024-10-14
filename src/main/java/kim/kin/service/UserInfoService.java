@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 /**
- * @author choky
+ * @author whoimi
  */
 public interface UserInfoService {
     UserInfo save(UserInfoDTO dto);

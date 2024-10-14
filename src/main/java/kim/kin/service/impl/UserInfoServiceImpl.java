@@ -12,7 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
- * @author choky
+ * @author whoimi
  */
 @Service
 public class UserInfoServiceImpl implements UserInfoService {

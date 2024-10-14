@@ -5,7 +5,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 /**
  *
- * @author choky
+ * @author whoimi
  */
 public class ReqKimException extends RuntimeException{
 

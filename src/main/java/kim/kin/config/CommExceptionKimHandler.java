@@ -20,7 +20,7 @@ import java.util.Date;
 import static org.springframework.http.ResponseEntity.badRequest;
 
 /**
- * @author choky
+ * @author whoimi
  */
 @RestControllerAdvice
 public class CommExceptionKimHandler {

@@ -1,7 +1,7 @@
 package kim.kin.config.security;
 
 /**
- * @author choky
+ * @author whoimi
  */
 public class SecurityParams {
     /**

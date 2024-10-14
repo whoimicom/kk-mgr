@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 //import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
 
 /**
- * @author choky
+ * @author whoimi
  */
 @SpringBootApplication
 @EnableJdbcRepositories

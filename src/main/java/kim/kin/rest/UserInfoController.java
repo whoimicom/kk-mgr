@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * @author choky
+ * @author whoimi
  */
 @Controller
 public class UserInfoController {

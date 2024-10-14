@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * @author choky
+ * @author whoimi
  */
 public class UserPermissionVO implements Serializable {
 

@@ -1,7 +1,7 @@
 package kim.kin.exception;
 
 /**
- * @author choky
+ * @author whoimi
  */
 public class ServicesKimException extends RuntimeException {
 

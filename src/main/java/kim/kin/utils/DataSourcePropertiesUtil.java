@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.Objects;
 
 /**
- * @author choky
+ * @author whoimi
  */
 @Service
 public class DataSourcePropertiesUtil {

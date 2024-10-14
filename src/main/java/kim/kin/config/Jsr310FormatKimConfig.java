@@ -30,7 +30,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 /**
- * @author choky
+ * @author whoimi
  */
 @Configuration
 public class Jsr310FormatKimConfig {

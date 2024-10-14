@@ -8,7 +8,7 @@ import java.util.Optional;
 
 
 /**
- * @author choky
+ * @author whoimi
  */
 @Repository
 public interface UserInfoRepository extends CrudRepository<UserInfo, Long>, PagingAndSortingRepository<UserInfo,Long> {

@@ -5,7 +5,7 @@ import org.springframework.security.core.userdetails.User;
 
 import java.util.Collection;
 /**
- * @author choky
+ * @author whoimi
  */
 public class UserKimDetails extends User {
 
