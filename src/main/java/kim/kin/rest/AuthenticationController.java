@@ -1,6 +1,8 @@
 package kim.kin.rest;
 
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import kim.kin.config.security.UserDetailsServiceKimImpl;
 import kim.kin.kklog.LogKimAnnotation;
 import kim.kin.model.MetaVO;
@@ -15,8 +17,7 @@ import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.util.*;
 
@@ -40,7 +41,7 @@ public class AuthenticationController {
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     @LogKimAnnotation
-    public void createAuthenticationToken(HttpServletRequest request, HttpServletResponse response,@RequestBody UserInfoDTO userInfoDTO) throws IOException {
+    public void createAuthenticationToken(HttpServletRequest request, HttpServletResponse response, @RequestBody UserInfoDTO userInfoDTO) throws IOException {
         String username = userInfoDTO.getUsername();
         String password = userInfoDTO.getPassword();
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));

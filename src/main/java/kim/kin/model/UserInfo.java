@@ -2,13 +2,11 @@ package kim.kin.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.annotation.*;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -16,12 +14,10 @@ import java.time.LocalDateTime;
 /**
  * @author choky
  */
-@Entity
-@Table(name = "kk_user_info")
+@Table("kk_user_info")
 public class UserInfo implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column
     private String username;
@@ -44,18 +40,18 @@ public class UserInfo implements Serializable {
 
     @CreatedBy
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column(name = "created_by")
+    @Column("created_by")
     private String createdBy;
 
     @CreatedDate
-    @Column(name = "created_datetime")
+    @Column("created_datetime")
     private LocalDateTime createdDatetime;
 
     @LastModifiedBy
-    @Column(name = "last_modified_by")
+    @Column("last_modified_by")
     private String lastModifiedBy;
     @LastModifiedDate
-    @Column(name = "last_modified_datetime")
+    @Column("last_modified_datetime")
     private LocalDateTime lastModifiedDatetime;
 
 
