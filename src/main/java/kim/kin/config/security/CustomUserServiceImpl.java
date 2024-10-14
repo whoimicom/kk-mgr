@@ -1,5 +1,6 @@
 package kim.kin.config.security;
 
+import jakarta.servlet.http.HttpSession;
 import kim.kin.model.UserInfo;
 import kim.kin.repository.UserInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 

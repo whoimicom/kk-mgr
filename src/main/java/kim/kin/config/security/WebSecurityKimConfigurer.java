@@ -1,85 +1,75 @@
 package kim.kin.config.security;
 
+
 import kim.kin.config.handler.AccessDeniedKimImpl;
 import kim.kin.config.handler.AuthenticationFailureKimImpl;
 import kim.kin.config.handler.AuthenticationSuccessKimImpl;
-import kim.kin.config.handler.LogoutHandlerKimImpl;
-import kim.kin.config.session.InvalidSessionStrategyKimImpl;
-import kim.kin.config.session.SessionInformationExpiredKimImpl;
 import kim.kin.repository.UserInfoRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.security.core.session.SessionRegistryImpl;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.logout.LogoutHandler;
-import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
-import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
-import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
-import org.springframework.security.web.session.InvalidSessionStrategy;
-import org.springframework.security.web.session.SimpleRedirectInvalidSessionStrategy;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.mvc.condition.PathPatternsRequestCondition;
+import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
-import javax.sql.DataSource;
 import java.util.*;
+
+import static org.springframework.http.HttpMethod.*;
 
 /**
  * @author choky
+ * @see <a href="https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter">spring-security-without-the-websecurityconfigureradapter</a>
  */
 @Configuration
 @EnableWebSecurity
-@Order(90)
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
-public class WebSecurityKimConfigurer extends WebSecurityConfigurerAdapter {
-    private static final Logger logger = LoggerFactory.getLogger(WebSecurityKimConfigurer.class);
-    private final AuthenticationFailureKimImpl authenticationFailureKimImpl;
-    private final UserDetailsServiceKimImpl userDetailsServiceKimImpl;
-    //    private final InvalidSessionStrategyKimImpl invalidSessionStrategyKimImpl;
-    private final SessionInformationExpiredKimImpl sessionInformationExpiredKimImpl;
+@EnableMethodSecurity
+public class WebSecurityKimConfigurer {
+    private static final Logger log = LoggerFactory.getLogger(WebSecurityKimConfigurer.class);
     private final AccessDeniedKimImpl accessDeniedKimImpl;
-    private final DataSource dataSource;
-    @Autowired
+    private final AuthenticationFailureKimImpl authenticationFailureKimImpl;
+    private final AuthenticationSuccessKimImpl authenticationSuccessKimImpl;
+    private final ApplicationContext applicationContext;
+
     private UserInfoRepository userInfoRepository;
 
-    public WebSecurityKimConfigurer(AuthenticationFailureKimImpl authenticationFailureKimImpl, UserDetailsServiceKimImpl userDetailsServiceKimImpl, InvalidSessionStrategyKimImpl invalidSessionStrategyKimImpl, SessionInformationExpiredKimImpl sessionInformationExpiredKimImpl, AccessDeniedKimImpl accessDeniedKimImpl, @Qualifier("dataSource") DataSource dataSource) {
-        this.authenticationFailureKimImpl = authenticationFailureKimImpl;
-        this.userDetailsServiceKimImpl = userDetailsServiceKimImpl;
-//        this.invalidSessionStrategyKimImpl = invalidSessionStrategyKimImpl;
-        this.sessionInformationExpiredKimImpl = sessionInformationExpiredKimImpl;
+    public WebSecurityKimConfigurer(AccessDeniedKimImpl accessDeniedKimImpl, AuthenticationFailureKimImpl authenticationFailureKimImpl, AuthenticationSuccessKimImpl authenticationSuccessKimImpl, ApplicationContext applicationContext) {
         this.accessDeniedKimImpl = accessDeniedKimImpl;
-        this.dataSource = dataSource;
+        this.authenticationFailureKimImpl = authenticationFailureKimImpl;
+        this.authenticationSuccessKimImpl = authenticationSuccessKimImpl;
+        this.applicationContext = applicationContext;
     }
 
-    // EMAIL
-    @Bean
-    public EmailCodeAuthenticationFilter emailCodeAuthenticationFilter() {
-        EmailCodeAuthenticationFilter emailCodeAuthenticationFilter = new EmailCodeAuthenticationFilter();
-        emailCodeAuthenticationFilter.setAuthenticationSuccessHandler(authenticationSucessHandler());
-        emailCodeAuthenticationFilter.setAuthenticationFailureHandler(authenticationFailureKimImpl);
-        return emailCodeAuthenticationFilter;
+    @Autowired
+    public void setUserInfoRepository(UserInfoRepository userInfoRepository) {
+        this.userInfoRepository = userInfoRepository;
     }
 
     @Bean
-    public EmailCodeAuthenticationProvider emailCodeAuthenticationProvider() {
-        return new EmailCodeAuthenticationProvider(userInfoRepository);
+    public AuthenticationManager authenticationManager() {
+        //不擦除认证密码，擦除会导致TokenBasedRememberMeServices因为找不到Credentials再调用UserDetailsService而抛出UsernameNotFoundException
+        return new ProviderManager();
+//        return new ProviderManager(Arrays.asList(EmailCodeAuthenticationToken(), daoAuthenticationProvider()));
     }
 
 
@@ -88,136 +78,110 @@ public class WebSecurityKimConfigurer extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        super.configure(auth);
-        auth.userDetailsService(userDetailsServiceKimImpl).passwordEncoder(passwordEncoder());
-        //authenticationProvider 根据传入的自定义AuthenticationProvider添加身份AuthenticationProvider 。
-        auth.authenticationProvider(emailCodeAuthenticationProvider());
 
-
-    }
-
+    //    @Bean//刷新token时自动调用
+//    public PreAuthenticatedAuthenticationProvider preAuthenticatedAuthenticationProvider() {
+//        PreAuthenticatedAuthenticationProvider provider = new PreAuthenticatedAuthenticationProvider();
+//        provider.setPreAuthenticatedUserDetailsService(new UserDetailsByNameServiceWrapper<>(userDetailsServiceImpl));
+//        return provider;
+//    }
     @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
-
-    @Bean
-    protected InvalidSessionStrategy invalidSessionStrategy() {
-        return new SimpleRedirectInvalidSessionStrategy("/login.html");
-    }
-
-
-    @Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception {
-        String[] anonResourcesUrl = {"/css/**", "/js/**", "/fonts/**", "/img/**", "*.svg", "*.png", "*.js", "*.css", "*.ico"};
-
-        Map<RequestMappingInfo, HandlerMethod> handlerMethodMap = getApplicationContext().getBean("requestMappingHandlerMapping", RequestMappingHandlerMapping.class).getHandlerMethods();
-        Map<String, Set<String>> anonymousUrls = anonymousUrls(handlerMethodMap);
-        httpSecurity.exceptionHandling().accessDeniedHandler(accessDeniedKimImpl);
-        httpSecurity.authenticationProvider(emailCodeAuthenticationProvider())
-                .addFilterBefore(emailCodeAuthenticationFilter(), AbstractPreAuthenticatedProcessingFilter.class);
-
-
-        // formLogin
-        httpSecurity.formLogin()
-                .loginPage("/login.html")
-                .loginProcessingUrl("/signin")
-                .successHandler(authenticationSucessHandler())
-                .failureHandler(authenticationFailureKimImpl);
-        // rememberMe
-        httpSecurity
-                .rememberMe()
-                .tokenRepository(persistentTokenRepository())
-                .tokenValiditySeconds(3600)
-                .userDetailsService(userDetailsServiceKimImpl);
-        // sessionManagement
-        httpSecurity.sessionManagement()
-                .invalidSessionStrategy(invalidSessionStrategy())
-//                .invalidSessionUrl("/login.html")
-                .maximumSessions(1)
-                .expiredSessionStrategy(sessionInformationExpiredKimImpl)
-                .sessionRegistry(sessionRegistry());
-        //logout
-        httpSecurity.logout()
-                .addLogoutHandler(logoutHandler())
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/")
-                .deleteCookies("JSESSIONID");
-        // authorizeRequests
-        httpSecurity.authorizeRequests()
-                .antMatchers(anonResourcesUrl).permitAll()
-                .antMatchers(
-                        "/login.html",
-                        "/authenticate",
-                        "/logout.html",
-                        "signin",
-                        "/testDate",
-                        "/jbpm/*",
-                        "testDate",
-//                        "/actuator/*",
-                        "/logout"
-                )
-                .permitAll()
-                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .antMatchers(HttpMethod.GET, anonymousUrls.get(HttpMethod.GET.toString()).toArray(String[]::new)).permitAll()
-                .antMatchers(HttpMethod.POST, anonymousUrls.get(HttpMethod.POST.toString()).toArray(String[]::new)).permitAll()
-                .antMatchers(HttpMethod.PUT, anonymousUrls.get(HttpMethod.PUT.toString()).toArray(String[]::new)).permitAll()
-                .antMatchers(HttpMethod.PATCH, anonymousUrls.get(HttpMethod.PATCH.toString()).toArray(String[]::new)).permitAll()
-                .antMatchers(HttpMethod.DELETE, anonymousUrls.get(HttpMethod.DELETE.toString()).toArray(String[]::new)).permitAll()
-                .antMatchers(anonymousUrls.get("ALL").toArray(String[]::new)).permitAll()
-                .anyRequest().authenticated();
-        // disable csrf
-        httpSecurity.csrf().disable();
-
-    }
-
-    @Bean
-    public SessionRegistry sessionRegistry() {
-        return new SessionRegistryImpl();
-    }
-
-    public AuthenticationSuccessKimImpl authenticationSucessHandler() {
-        return new AuthenticationSuccessKimImpl(sessionRegistry());
-    }
-
-    @Bean
-    public PersistentTokenRepository persistentTokenRepository() {
-        JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
-        jdbcTokenRepository.setDataSource(dataSource);
-        jdbcTokenRepository.setCreateTableOnStartup(false);
-        return jdbcTokenRepository;
-    }
-
-    @Bean
-    public LogoutHandler logoutHandler() {
-        LogoutHandlerKimImpl logoutHandlerKimImpl = new LogoutHandlerKimImpl();
-        logoutHandlerKimImpl.setSessionRegistry(sessionRegistry());
-        return logoutHandlerKimImpl;
-    }
-
-    /**
-     * setHideUserNotFoundExceptions false
-     *
-     * @return AuthenticationProvider
-     */
-/*    @Bean
-    public AuthenticationProvider daoAuthenticationProvider() {
+    DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setUserDetailsService(userDetailsServiceKimImpl);
-        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
-        daoAuthenticationProvider.setHideUserNotFoundExceptions(false);
+        daoAuthenticationProvider.setPasswordEncoder(new BCryptPasswordEncoder());
+//        daoAuthenticationProvider.setUserDetailsService(userDetailsServiceImpl);
         return daoAuthenticationProvider;
-    }*/
+    }
 
 
-/*     @Autowired
-   public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) {
-        authenticationManagerBuilder.authenticationProvider(daoAuthenticationProvider());
-    }*/
+//    @Bean
+//    public WebSecurityCustomizer webSecurityCustomizer() {
+//        return web -> web.ignoring().requestMatchers("/register", "/")
+//                .requestMatchers("/swagger**/**")
+//                .requestMatchers("/webjars/**")
+//                .requestMatchers("/v3/**")
+//                .requestMatchers("/doc.html");
+//    }
 
+    @Order(SecurityProperties.BASIC_AUTH_ORDER)
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, AuthenticationManager authenticationManager) throws Exception {
+        Map<RequestMappingInfo, HandlerMethod> handlerMethodMap = applicationContext.getBean("requestMappingHandlerMapping", RequestMappingHandlerMapping.class).getHandlerMethods();
+        Map<String, Set<String>> anonymousUrls = anonymousUrls(handlerMethodMap);
+//        httpSecurity
+//                .authenticationProvider(emailAuthenticationProvider())
+//                .authenticationManager(authenticationManager)
+/*                .addFilterBefore(emailAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtRequestFilter(authenticationManager, jwtTokenUtil), UsernamePasswordAuthenticationFilter.class)
+                .addFilter(new UsernamePasswordKimFilter(authenticationManager, jwtTokenUtil));*/
+        // We don't need CSRF for this example
+        httpSecurity.csrf(AbstractHttpConfigurer::disable);
+//        AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry auth = httpSecurity.csrf().disable().authorizeHttpRequests();
+
+        httpSecurity.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> {
+            authorizationManagerRequestMatcherRegistry.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
+            authorizationManagerRequestMatcherRegistry.requestMatchers("/**.png").permitAll();
+            log.info(Arrays.toString(anonymousUrls.get(GET.toString()).toArray(String[]::new)));
+            if (!anonymousUrls.get(GET.toString()).isEmpty()) {
+                authorizationManagerRequestMatcherRegistry.requestMatchers(GET, anonymousUrls.get(GET.toString()).toArray(String[]::new)).permitAll();
+            }
+            if (!anonymousUrls.get(POST.toString()).isEmpty()) {
+                authorizationManagerRequestMatcherRegistry.requestMatchers(POST, anonymousUrls.get(POST.toString()).toArray(String[]::new)).permitAll();
+            }
+            if (!anonymousUrls.get(PUT.toString()).isEmpty()) {
+                authorizationManagerRequestMatcherRegistry.requestMatchers(POST, anonymousUrls.get(PUT.toString()).toArray(String[]::new)).permitAll();
+            }
+            if (!anonymousUrls.get(PATCH.toString()).isEmpty()) {
+                authorizationManagerRequestMatcherRegistry.requestMatchers(PATCH, anonymousUrls.get(PATCH.toString()).toArray(String[]::new)).permitAll();
+            }
+            if (!anonymousUrls.get(DELETE.toString()).isEmpty()) {
+                authorizationManagerRequestMatcherRegistry.requestMatchers(DELETE, anonymousUrls.get(DELETE.toString()).toArray(String[]::new)).permitAll();
+            }
+            if (!anonymousUrls.get("ALL").isEmpty()) {
+                authorizationManagerRequestMatcherRegistry.requestMatchers(anonymousUrls.get("ALL").toArray(String[]::new)).permitAll();
+            }
+            // all other requests need to be authenticated
+            authorizationManagerRequestMatcherRegistry.anyRequest().authenticated();
+        });
+
+
+/*        auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
+        log.info(anonymousUrls.get(GET.toString()).toArray(String[]::new).toString());
+        if (anonymousUrls.get(GET.toString()).size() > 0) {
+            auth.requestMatchers(GET, anonymousUrls.get(GET.toString()).toArray(String[]::new)).permitAll();
+        }
+        if (anonymousUrls.get(POST.toString()).size() > 0) {
+            auth.requestMatchers(POST, anonymousUrls.get(POST.toString()).toArray(String[]::new)).permitAll();
+        }
+        if (anonymousUrls.get(PUT.toString()).size() > 0) {
+            auth.requestMatchers(POST, anonymousUrls.get(PUT.toString()).toArray(String[]::new)).permitAll();
+        }
+        if (anonymousUrls.get(PATCH.toString()).size() > 0) {
+            auth.requestMatchers(PATCH, anonymousUrls.get(PATCH.toString()).toArray(String[]::new)).permitAll();
+        }
+        if (anonymousUrls.get(DELETE.toString()).size() > 0) {
+            auth.requestMatchers(DELETE, anonymousUrls.get(DELETE.toString()).toArray(String[]::new)).permitAll();
+        }
+        if (anonymousUrls.get("ALL").size() > 0) {
+            auth.requestMatchers(anonymousUrls.get("ALL").toArray(String[]::new)).permitAll();
+        }
+        auth.anyRequest().authenticated();*/
+
+        // make sure we use stateless session; session won't be used to
+        // store user's state.
+//        httpSecurity.exceptionHandling(httpSecurityExceptionHandlingConfigurer -> httpSecurityExceptionHandlingConfigurer.authenticationEntryPoint(authenticationEntryPointKimImpl)
+//                .accessDeniedHandler(accessDeniedKimImpl));
+        httpSecurity.sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+//        auth.and().exceptionHandling().authenticationEntryPoint(authenticationEntryPointKimImpl)
+//                .accessDeniedHandler(accessDeniedKimImpl)
+//                .and().sessionManagement()
+//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        return httpSecurity.build();
+
+        // Add a filter to validate the tokens with every request
+//        httpSecurity.addFilterBefore(new JwtRequestFilter(authenticationManager(), jwtTokenUtil), UsernamePasswordAuthenticationFilter.class);
+//        httpSecurity.addFilter(new JwtRequestFilter(authenticationManager(), jwtTokenUtil));
+    }
 
     private Map<String, Set<String>> anonymousUrls(Map<RequestMappingInfo, HandlerMethod> handlerMethodMap) {
         Map<String, Set<String>> anonymousUrls = new HashMap<>(6);
@@ -232,48 +196,39 @@ public class WebSecurityKimConfigurer extends WebSecurityConfigurerAdapter {
             AnonymousKimAccess anonymousKimAccess = handlerMethod.getMethodAnnotation(AnonymousKimAccess.class);
             if (null != anonymousKimAccess) {
                 List<RequestMethod> requestMethods = new ArrayList<>(infoEntry.getKey().getMethodsCondition().getMethods());
-                if (0 != requestMethods.size()) {
-                    HttpMethod httpMethod = HttpMethod.resolve(requestMethods.get(0).name());
-                    switch (Objects.requireNonNull(httpMethod)) {
-                        case GET -> {
-                            assert infoEntry.getKey().getPatternsCondition() != null;
-                            get.addAll(infoEntry.getKey().getPatternsCondition().getPatterns());
-                        }
-                        case POST -> {
-                            assert infoEntry.getKey().getPatternsCondition() != null;
-                            post.addAll(infoEntry.getKey().getPatternsCondition().getPatterns());
-                        }
-                        case PUT -> {
-                            assert infoEntry.getKey().getPatternsCondition() != null;
-                            put.addAll(infoEntry.getKey().getPatternsCondition().getPatterns());
-                        }
-                        case PATCH -> {
-                            assert infoEntry.getKey().getPatternsCondition() != null;
-                            patch.addAll(infoEntry.getKey().getPatternsCondition().getPatterns());
-                        }
-                        case DELETE -> {
-                            assert infoEntry.getKey().getPatternsCondition() != null;
-                            delete.addAll(infoEntry.getKey().getPatternsCondition().getPatterns());
-                        }
-                        default -> {
-                        }
+                if (!requestMethods.isEmpty()) {
+                    HttpMethod httpMethod = HttpMethod.valueOf(requestMethods.get(0).name());
+                    HttpMethod method = Objects.requireNonNull(httpMethod);
+                    Set<String> path = Optional.of(infoEntry).map(Map.Entry::getKey).map(RequestMappingInfo::getPatternsCondition).map(PatternsRequestCondition::getPatterns)
+                            .orElse(Optional.of(infoEntry).map(Map.Entry::getKey).map(RequestMappingInfo::getPathPatternsCondition).map(PathPatternsRequestCondition::getPatternValues).get());
+                    if (method.equals(GET)) {
+                        get.addAll(path);
+                    } else if (method.equals(POST)) {
+                        post.addAll(path);
+                    } else if (method.equals(PUT)) {
+                        put.addAll(path);
+                    } else if (method.equals(PATCH)) {
+                        patch.addAll(path);
+                    } else if (method.equals(DELETE)) {
+                        delete.addAll(path);
                     }
-                } else {
-                    assert infoEntry.getKey().getPatternsCondition() != null;
-                    all.addAll(infoEntry.getKey().getPatternsCondition().getPatterns());
                 }
+//                else {
+//                    all.addAll(infoEntry.getKey().getPatternsCondition().getPatterns());
+//                }
 
             }
         }
-        anonymousUrls.put(HttpMethod.GET.toString(), get);
-        anonymousUrls.put(HttpMethod.POST.toString(), post);
-        anonymousUrls.put(HttpMethod.PUT.toString(), put);
+        anonymousUrls.put(GET.toString(), get);
+        anonymousUrls.put(POST.toString(), post);
+        anonymousUrls.put(PUT.toString(), put);
         anonymousUrls.put(HttpMethod.PATCH.toString(), patch);
         anonymousUrls.put(HttpMethod.DELETE.toString(), delete);
         anonymousUrls.put("ALL", all);
-        logger.info(String.valueOf(anonymousUrls));
-        logger.info(Arrays.toString(anonymousUrls.get("ALL").toArray(String[]::new)));
+        log.info(String.valueOf(anonymousUrls));
+        log.info(Arrays.toString(anonymousUrls.get("ALL").toArray(String[]::new)));
         return anonymousUrls;
     }
+
 
 }
