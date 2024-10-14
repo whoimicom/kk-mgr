@@ -1,24 +1,10 @@
 server:
   port: 80
   servlet:
-    context-path: /kk-mgr
+    context-path: /wii-singly-mgr
 spring:
   profiles:
     active: sit
-  jpa:
-    open-in-view: true
-    show-sql: false
-    properties:
-      entity-scan-packages: kim.kin
-    hibernate:
-      naming:
-        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl
-#        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
-#        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
-#        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyHbmImpl
-#        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
-#        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
   datasource:
     type: com.mysql.cj.jdbc.MysqlXADataSource
     hikari:
@@ -66,13 +52,4 @@ kim:
   kin:
     channel-no: '000'
     file-path: /data/file
-
-jbpm:
-  executor:
-    enabled: false
-  default:
-    processId: test
-  bpmn2file:
-    path: test.bpmn,hello.bpmn
-
 

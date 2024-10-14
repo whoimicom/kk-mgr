@@ -4,13 +4,6 @@ spring:
     url: jdbc:mysql://localhost:3306/kinkim?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
     username: kinkim
     password: 123456
-  jpa:
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
-        format_sql: false
-        hbm2ddl:
-          auto: update
   data:
     redis:
       host: localhost
