@@ -1,13 +1,13 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/kinkim?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
-    username: im@kin.kim[yT0o/tBDsLDMKDJkWsmSMLT1D1F6VdjJQ2piv1kJVmsT66+q3xZlaIrfe8PaU1OFhgdfywgTilVb2q2J/mWH2yPIezWRJR5WhUNp+thJJyH1UwT7GL+aGy8peUU5dv6ORWxyLC/xJK4kFuS3Exum5B2Yf1owj1oRHeVyzknK47FynIY75g6UCpMnInIxlJwZIGFmOwn1B7FKwqewhtC1+Xx4QELFFr5ACKD4k2q3cfjl8xkdXBkfsaiWwhikLJjWGX5Hfy0ry0NagAAFis9BA9LQobSemfyl6iiyBuPpHQ2MXQDaE7NzVF9O77tf/0GVJhKg8dT3VaDNYOy9S9AcaQ==]
-    password: im@kin.kim[NACfREF4LFIQFDM7MXotJilYF/b2gX+CkgvnPbRxRtqCiQ1UcZsqW2idQ2+fnxpnF6tGZlR+XYqvpMvRk7tms9B+Mv/M582EUk+gIdugS46sjzL/1q8RZ9fuVpNe6deWsggwqZwVXj1E7z/hKk4B0VAmY+32gIoRZrDxu/JSu52saCMjx1TIAvYPb4Ms8pO3xUo6M56ew9TAO0SKIHDR/4KpvrzrtsYKLUyyy31a0+WRNq/4n4CmqQXiDwuspMb5ap8V1g27nvhuPBytIhVOP7RdeV/kcSzMury9lKMbMrcBdGetC93s1mie7stn2uGx7ApMRRJo1ejjXK8ZbkQsrQ==]
+    url: jdbc:mysql://localhost:3306/wiicom?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
+    username: mail@whoimi.com[pP/XcBb1plHO10KZoJ/+eKbhqWpUJd1up7q7pRppp7FAZ7Hhgze3Q38N4ODhXgqBSbtPB1XQNddYgGC+dqWiUV6MoH/Gdiwqbx3+Qu0qHX/vTpwSfxAMl0raPkErCQQuTd5P7gwZPH394MUeK87Y96HyFL0rYy7lIr3TaylyokxOqUHrNUS83NuhA6Eenv9H3TCYURFrSOoyLuTKgEW19SIM+dch5iciE/hHv4Yi2EGDmng9RX2ZnghUllKD3aSinYZ/Vhe3v38Rc9lGbfFI1XUE173REFnJfXj/hH05pDSgxK3vsRBhQYFs1xcVIwhjmXrOawB2CwwSLsViNXeUnA==]
+    password: mail@whoimi.com[SD9Swa4+2rIH4Xzx470BaCx/YMD/EkQrtpdQ8JlwBiDjmj4jEUy50abypNvFgSc3DvPIzSSI0292hcBSujYZ3Wg1l2xfbs4zzkITSZTduAgYR7J7TcRLffCcUpn2bXUf5j8Fw6z7zfwF0ndJNrh2pSrtmtTUSKz2ntF7Ed8B4MBjcnp++xzikCzlPdas5crLF0MC4ic0mX/olHAyzTMIx4e+USzmjGBlyvH/iuZQyHw02NQhRDjXaYZWM/UTvC4k3os40XciWLn286veRU9uO6vDV60s2O9cCqxWU1UQl6HEeDhOc6FhG2XuzY+toVKZD+MfUziV1Taw+Jm8+RYGyg==]
   data:
     redis:
       host: localhost
-      password: im@kin.kim[NACfREF4LFIQFDM7MXotJilYF/b2gX+CkgvnPbRxRtqCiQ1UcZsqW2idQ2+fnxpnF6tGZlR+XYqvpMvRk7tms9B+Mv/M582EUk+gIdugS46sjzL/1q8RZ9fuVpNe6deWsggwqZwVXj1E7z/hKk4B0VAmY+32gIoRZrDxu/JSu52saCMjx1TIAvYPb4Ms8pO3xUo6M56ew9TAO0SKIHDR/4KpvrzrtsYKLUyyy31a0+WRNq/4n4CmqQXiDwuspMb5ap8V1g27nvhuPBytIhVOP7RdeV/kcSzMury9lKMbMrcBdGetC93s1mie7stn2uGx7ApMRRJo1ejjXK8ZbkQsrQ==]
+      password: mail@whoimi.com[ofdVcHK+MRzXdlxj2GkZV48lSteJQ6TdqANjyLBxzrsC1NcgjPFSXcEhzBwxkZaCWzuVgUyrboHmOqw9Cjmr/2YqvXS3omKJokfwpNgtd0FXKcA2TpUn1dFcF+iXf47bfsaxrWx4Sizk0dqCe6iOkkAxhV5XsDHy2YWPxdWXlFIR0p5qGvrgR6AHUx+fxVfw7YptfI7Hk8g9dbTDLpQva0GAcWe5HizCnx88VXoiC+cBa1lVcX+77Qj7i33oaZczvkDh06ehmsm3pQAZjtIbQeV+6m1YVIMqrHyR4NgkZb6cMicUSxYmVvxs/NEvDgOPlG3kz99xKAChx29n8ys3Jw==]
       port: 6379
       database: 0
 jasypt:
@@ -15,7 +15,7 @@ jasypt:
     #    algorithm: PBEWITHHMACSHA512ANDAES_256
     #    password: a2lua2lt
     property:
-      prefix: "im@kin.kim["
+      prefix: "mail@whoimi.com["
       suffix: "]"
     private-key-format: pem
     public-key-format: pem
